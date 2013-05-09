@@ -37,10 +37,9 @@
 		--------------------------------------------------------------------->
 		<section id = "homePage" data-role = "page">
 			
-			<header data-role = "header" data-position = "fixed">
+			<header data-role = "header">
 				<!-- Banner goes here -------->
 				<a href="#aboutPage" data-role="button" data-icon="info" data-iconpos="notext" data-theme="g" data-inline="true" class = "ui-btn-right">Info</a>
-				
 			</header>
 			<img src = "images/Untitled-2.png"/>
 			
@@ -62,7 +61,7 @@
 			</div>
 			
 		<!-- Footer goes here -------------->
-		<footer data-role = "footer" data-theme = "a" data-position = "fixed" data-id = "ftbottom">
+		<footer data-role = "footer" data-theme = "a" data-id = "ftbottom">
 			<div data-role="controlgroup" data-type="horizontal" align = "center">
 				<a href="#newEntry" data-role = "button" data-icon="plus">New</a>       	
 				<a href="#homePage" data-role = "button" data-icon="home" class = "ui-btn-active">Home</a>
@@ -77,24 +76,23 @@
 		-------------------------------------------------------------------------->
 		<section id = "newsFeed" data-role = "page">
 			
-			<header data-role = "header" data-position = "fixed">
+			<header data-role = "header">
 				<!-- Banner goes here -------->
 				<a href="#homePage" data-role="button" data-icon="arrow-l" data-iconpos="notext" data-theme="g" data-inline="true">Back</a>
 				<a href="#aboutPage" data-role="button" data-icon="info" data-iconpos="notext" data-theme="g" data-inline="true">Info</a>
-				<img src = "images/Untitled-2.png"/>
 			</header>
-			
+			<img src = "images/Untitled-2.png"/>
 			
 			
 			
 			<!-- Content goes here --------->
 			<div data-role = "content" class = "content">
-				<p>This is a list of the last 5 items with the most recent item inserted on top.</p>
+				<p>This is a list all the items organized by date (most recent one first).</p>
 				
 			</div>
 			
 			<!-- Footer goes here -------------->
-			<footer data-role = "footer" data-theme = "a" data-position = "fixed" data-id = "ftbottom">
+			<footer data-role = "footer" data-theme = "a" data-id = "ftbottom">
 				<div data-role="controlgroup" data-type="horizontal" align = "center">
 					<a href="#newEntry" data-role = "button" data-icon="plus">New</a>       	
 					<a href="#homePage" data-role = "button" data-icon="home">Home</a>
@@ -109,13 +107,12 @@
 		-------------------------------------------------------------------------->
 		<section id = "aboutPage" data-role = "page">
 			
-			<header data-role = "header" data-position = "fixed">
+			<header data-role = "header">
 				<!-- Banner goes here -------->
 				<a href="#homePage" data-role="button" data-icon="arrow-l" data-iconpos="notext" data-theme="g" data-inline="true">Back</a>
 				<a href="#aboutPage" data-role="button" data-icon="info" data-iconpos="notext" data-theme="g" data-inline="true" class = "ui-btn-active">Info</a>
-				<img src = "images/Untitled-2.png"/>
 			</header>
-			
+			<img src = "images/Untitled-2.png"/>
 			
 			
 			
@@ -132,7 +129,7 @@
 			</div>
 			
 			<!-- Footer goes here -------------->
-			<footer data-role = "footer" data-theme = "a" data-position = "fixed" data-id = "ftbottom">
+			<footer data-role = "footer" data-theme = "a" data-id = "ftbottom">
 				<div data-role="controlgroup" data-type="horizontal" align = "center">
 					<a href="#newEntry" data-role = "button" data-icon="plus">New</a>       	
 					<a href="#homePage" data-role = "button" data-icon="home">Home</a>
@@ -141,6 +138,37 @@
 			</footer>
 		
 		</section> <!-- End of About page -->
+		
+		<!--New Entry page goes here----------------------------------------------
+		-------------------------------------------------------------------------->
+		<section id = "newEntry" data-role = "page">
+			
+			<header data-role = "header">
+				<!-- Banner goes here -------->
+				<a href="#homePage" data-role="button" data-icon="arrow-l" data-iconpos="notext" data-theme="g" data-inline="true">Back</a>
+				<a href="#aboutPage" data-role="button" data-icon="info" data-iconpos="notext" data-theme="g" data-inline="true">Info</a>
+			</header>
+			<img src = "images/Untitled-2.png"/>
+			
+			
+			
+			<!-- Content goes here --------->
+			<div data-role = "content" class = "content">
+				
+				
+			</div>
+			
+			<!-- Footer goes here -------------->
+			<footer data-role = "footer" data-theme = "a" data-id = "ftbottom">
+				<div data-role="controlgroup" data-type="horizontal" align = "center">
+					<a href="#newEntry" data-role = "button" data-icon="plus" class = "ui-btn-active">New</a>       	
+					<a href="#homePage" data-role = "button" data-icon="home">Home</a>
+					<a href="#newsFeed" data-role = "button" data-icon="grid">Feed</a>
+				</div>
+			</footer>
+		
+		</section> <!-- End of New Entry page -->
+		
 		<!--main.js file goes here-->
 		<script src="js/main.js"></script>
 	</body>
