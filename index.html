@@ -23,20 +23,19 @@
 	
 	<body>
 		
-		<!--Home page goes here---------------------------------------------->
+		<!--Home page goes here----------------------------------------------
+		--------------------------------------------------------------------->
 		<section id = "homePage" data-role = "page">
 			
 			<header data-role = "header" data-position = "fixed">
 				<!-- Banner goes here -------->
-				<a href="#" data-role="button" data-icon="info" data-iconpos="notext" data-theme="g" data-inline="true" class = "ui-btn-center">Info</a>
+				<a href="aboutPage" data-role="button" data-icon="info" data-iconpos="notext" data-theme="g" data-inline="true">Info</a>
 				<img src = "images/Untitled-2.png"/>
 			</header>
 			
 			
-			
-			
 			<!-- Content goes here --------->
-			<div data-role = "content" class = "content"><hr><br/>
+			<div data-role = "content" class = "content">
 				
 				<ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true">
 					<li data-role="list-divider" data-link="audio"><span class = "marginLeft">Audio Entries</span><span class="ui-icon ui-icon-plus ui-icon-shadow listIcon"></span></li>
@@ -55,13 +54,44 @@
 		<!-- Footer goes here -------------->
 		<footer data-role = "footer" data-theme = "a" data-position = "fixed" data-id = "ftbottom">
 			<div data-role="controlgroup" data-type="horizontal" align = "center">
-				<a href="#mainPage" data-role = "button" data-icon="plus" data-theme = "a">New</a>       	
-				<a href="#moreInfo" data-role = "button" data-icon="home" data-theme = "a">Home</a>
-				<a href="#newsStream" data-role = "button" data-icon="grid" data-theme = "a">Feed</a>
+				<a href="#newEntry" data-role = "button" data-icon="plus">New</a>       	
+				<a href="#homePage" data-role = "button" data-icon="home" class = "ui-btn-active">Home</a>
+				<a href="#newsFeed" data-role = "button" data-icon="grid">Feed</a>
 			</div>
 		</footer>
 		
-		</section>
+		</section> <!-- End of Home page -->
+		
+		
+		<!--News Feed page goes here----------------------------------------------
+		-------------------------------------------------------------------------->
+		<section id = "newsFeed" data-role = "page">
+			
+			<header data-role = "header" data-position = "fixed">
+				<!-- Banner goes here -------->
+				<a href="aboutPage" data-role="button" data-icon="info" data-iconpos="notext" data-theme="g" data-inline="true">Info</a>
+				<img src = "images/Untitled-2.png"/>
+			</header>
+			
+			
+			
+			
+			<!-- Content goes here --------->
+			<div data-role = "content" class = "content">
+				<p>Details about each entry go here.</p>
+				
+			</div>
+			
+			<!-- Footer goes here -------------->
+			<footer data-role = "footer" data-theme = "a" data-position = "fixed" data-id = "ftbottom">
+				<div data-role="controlgroup" data-type="horizontal" align = "center">
+					<a href="#newEntry" data-role = "button" data-icon="plus">New</a>       	
+					<a href="#homePage" data-role = "button" data-icon="home">Home</a>
+					<a href="#newsFeed" data-role = "button" data-icon="grid" class = "ui-btn-active">Feed</a>
+				</div>
+			</footer>
+		
+		</section> <!-- End of News Feed page -->
 	
 		<!--main.js file goes here-->
 		<script src="js/main.js"></script>
