@@ -6,7 +6,18 @@
 $(document).on('pagebeforeshow','#homePage', function() {
 	//call outputData function
 	outputData();
+	
+	$('#ulListView').on('click', 'li', function(){
+		
+		alert("Entry ID: "+this.id);
+		
+		
+	});
 });//here ends #homePage
+
+$(document).on('pageinit', '#homePage', function(){
+
+});
 
 //#newsFeed starts here
 $(document).on('pageinit', '#newsFeed', function(){
@@ -94,7 +105,7 @@ var outputData = function(){
 		
 		
 		//3.3. Create a <li> tag that holds the localStorage object
-		var insideLi = $('#ulListView').append('<li><a href="#detailsPage" data-transition = "slide"><img src = "images/smAudio.png" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj[1].value+'</strong></p></span><p class = "ui-li-aside">'+parsedObj[0].value+'</p></a></li>');
+		var insideLi = $('#ulListView').append('<li><a href="#detailsPage" data-transition = "slide"><img src = "images/smAudio.png" class="ui-li-icon ui-corner-none" id = "'+storedKey+'"/><span><p><strong>'+parsedObj[1].value+'</strong></p></span><p class = "ui-li-aside">'+parsedObj[0].value+'</p></a></li>');
 		//3.4. Check if a devider with the object's '<optgroup label> already exists, if not create one ["audio", "video", "data", "other"]
 		
 		//3.5. Add the localStorage object under the above category using the html format refferenced below (make sure the bbj. has an idea to target it later).
