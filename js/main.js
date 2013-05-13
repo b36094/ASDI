@@ -3,8 +3,9 @@
 // File Purpose: Basic Start-up Template
 
 //#homePage starts here
-$(document).on('pageinit','#homePage', function() {
-	
+$(document).on('pageshow','#homePage', function() {
+	//call outputData function
+	outputData();
 });//here ends #homePage
 
 //#newsFeed starts here
@@ -71,3 +72,47 @@ var genRandomId = function(){
 	var randomId = Math.floor(Math.random() * 10000001);
 	return randomId;
 };
+
+//dsplayData function outputs the localStorage on the '#homePage'
+var outputData = function(){
+	//1. Get the lenght of the localStorage
+	var localStL = localStorage.length;
+	
+	//2. Create a <ul> filter that holds all the <li>
+	var ulListView = $('#container').append('<ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true" id = "ulListView"></ul>');
+	
+	//3. Loop through the length of localStorage
+	for(var i = 0, j = localStL; i < j; i ++) {
+		
+		//3.1. Get key-value pare
+		var storedKey = localStorage.key(i); //get the key to refference for the value
+		var storedObj = localStorage.getItem(storedKey); //get the value under the specified key
+		
+		//3.2. Parse data back into an obj. to be able to access properties.
+		var parsedObj = JSON.parse(storedObj);
+		
+		
+		
+		//3.3. Create a <li> tag that holds the localStorage object
+		var insideLi = $('#ulListView').append('<li><a href="#detailsPage" data-transition = "slide"><img src = "images/smAudio.png" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj[1].value+'</strong></p></span><p class = "ui-li-aside">'+parsedObj[0].value+'</p></a></li>');
+		//3.4. Check if a devider with the object's '<optgroup label> already exists, if not create one ["audio", "video", "data", "other"]
+		
+		//3.5. Add the localStorage object under the above category using the html format refferenced below (make sure the bbj. has an idea to target it later).
+		
+		
+	} //the for loops ends here
+	
+	
+	
+	
+	 
+	 
+	
+};
+
+
+/* Refference code for the display function
+<ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true">
+	<li data-role="list-divider" data-link="audio"><span class = "marginLeft">Audio Entries</span><span class="ui-icon ui-icon-plus ui-icon-shadow listIcon"></span></li>
+	<li><a href="#detailsPage" data-transition = "slide"><img src = "images/smAudio.png" class="ui-li-icon ui-corner-none"/><span><p><strong>Love Is Perfect</strong></p></span><p class = "ui-li-aside">Audio Cd</p></a></li>
+</ul>*/
