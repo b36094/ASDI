@@ -23,8 +23,8 @@ $(document).on('pageinit', '#detailsPage', function(){
 });//here ends #detailsPage
 
 //#newEntryPage starts here
-$(document).on('pageinit', '#newEntryPage', function(){
-
+$(document).on('pageinit', '#newEntry', function(){
+	
 	//function to parse the form
 	var $myFirstForm = $('#firstForm');
 	
@@ -54,22 +54,17 @@ $(document).on('pageinit', '#newEntryPage', function(){
 		window.location = '#homePage';
 				
 		}
-	});
+	}); //here ends the validation function
+	
+	//Refresh the '#homePage' to display all the local store changes
+	$('#submitBt').click(function(){
 		
+});	
 	
 	
 });//here ends #newEntryPage
 
-//Refresh the '#displayData' page to update all the local store changes
-	$('#submitBt').click(function(){
-		
-		alert("I've been cliked");
-		//tranports to displayData
-		window.location = '#homePage';	
-		
-		//refreshes displayData
-		window.location.reload('#homePage');
-});
+
 
 //genRandomId function creates a random number and returns it to be caught by the validator 
 var genRandomId = function(){
