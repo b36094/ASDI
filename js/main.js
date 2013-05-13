@@ -3,7 +3,7 @@
 // File Purpose: Basic Start-up Template
 
 //#homePage starts here
-$(document).on('pageshow','#homePage', function() {
+$(document).on('pagebeforeshow','#homePage', function() {
 	//call outputData function
 	outputData();
 });//here ends #homePage
