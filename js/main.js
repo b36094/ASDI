@@ -111,23 +111,53 @@ var outputData = function(){
 		parsedObj.id = storedKey;
 		
 		//3.4. Create a <li> tag that holds the localStorage object
-		var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/smAudio.png" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj[1].value+'</strong></p></span><p class = "ui-li-aside">'+parsedObj[0].value+'</p></a></li>');
+		var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj[0].value)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj[1].value+'</strong></p></span><p class = "ui-li-aside">'+parsedObj[0].value+'</p></a></li>');
 		
+		//call filterImage with an input of groupMedia
+		
+		
+		//This line refreshes the listview attribute in jqm (there are some issues in the #homePage with the way they display)
 		insideLi.listview().listview('refresh');
+		
 		//3.5. Check if a devider with the object's '<optgroup label> already exists, if not create one ["audio", "video", "data", "other"]
 		
 		//3.6. Add the localStorage object under the above category using the html format refferenced below (make sure the bbj. has an idea to target it later).
 		
+		console.log(parsedObj);
 	} //the for loops ends here
-	
-	
-	
-	
-	 
-	 
-	
+
 };
 
+/*filterImage is in charge of figuring out what type of image we display in the <li>. 
+  It returns a file name based on the obj. parameter it receives*/
+var filterImage = function(input) {
+	//1. if the input is audio output smAudio.png
+	if (input.indexOf("Audio") == 0) {
+		
+		return "smAudio.png";
+	}
+	else if(input.indexOf("Video") == 0) {
+	
+		return "smVideo.png";
+	}
+	else if(input.indexOf("Data") == 0) {
+		
+		return "smData.png";
+	}
+	else if(input.indexOf("eBook") == 0) {
+		
+		return "smBook.png";
+	}
+	else if(input.indexOf("eDoc") == 0) {
+		
+		return "smDocument.png";
+	}
+	else if(input.indexOf("MemoryStick") == 0) {
+		
+		return "smMemoryStick.png";
+	}
+	
+};
 
 /* Refference code for the display function
 <ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true">
