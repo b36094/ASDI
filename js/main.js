@@ -99,7 +99,6 @@ var outputData = function(){
 		
 		//3.5. Add the localStorage object under the above category using the html format refferenced below (make sure the bbj. has an idea to target it later).
 		
-		
 	} //the for loops ends here
 	
 	
