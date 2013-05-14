@@ -12,6 +12,11 @@ $(document).on('pagebeforeshow','#homePage', function() {
 	$('#ulListView').on('click', 'li', function(){
 		
 		alert("Entry ID: "+this.id);
+		
+		var $displayPage = $(document).add('<section id = "'+this.id+'" src = "#'+this.id+'"data-role = "page"><div data-role = "header"></div><div data-role = "content"></div><div data-role = "footer"></div></section>');
+		console.log(this.id);
+		
+				
 	});
 	
 	
@@ -158,6 +163,12 @@ var filterImage = function(input) {
 	}
 	
 };
+
+//createPage is in charge of creating all the dynamic pages with details.
+var createPages = function () {
+	
+	
+}; 
 
 /* Refference code for the display function
 <ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true">
