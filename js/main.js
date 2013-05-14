@@ -13,8 +13,9 @@ $(document).on('pagebeforeshow','#homePage', function() {
 		
 		alert("Entry ID: "+this.id);
 		
-		var $displayPage = $(document).add('<section id = "'+this.id+'" src = "#'+this.id+'"data-role = "page"><div data-role = "header"></div><div data-role = "content"></div><div data-role = "footer"></div></section>');
-		console.log(this.id);
+		console.log(this);
+		
+		//call displayDetails function
 		
 				
 	});
@@ -115,6 +116,9 @@ var outputData = function(){
 		//3.3. Add the id property to parsedObj for future refference
 		parsedObj.id = storedKey;
 		
+		//call function displayDetails();
+		displayDetails(parsedObj);
+		
 		//3.4. Create a <li> tag that holds the localStorage object
 		var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj[0].value)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj[1].value+'</strong></p></span><p class = "ui-li-aside">'+parsedObj[0].value+'</p></a></li>');
 		
@@ -175,3 +179,27 @@ var createPages = function () {
 	<li data-role="list-divider" data-link="audio"><span class = "marginLeft">Audio Entries</span><span class="ui-icon ui-icon-plus ui-icon-shadow listIcon"></span></li>
 	<li><a href="#detailsPage" data-transition = "slide"><img src = "images/smAudio.png" class="ui-li-icon ui-corner-none"/><span><p><strong>Love Is Perfect</strong></p></span><p class = "ui-li-aside">Audio Cd</p></a></li>
 </ul>*/
+
+/* Refference code for 
+<ul data-role = "listview" data-inset = "true"> 
+					<li data-role = "devider" data-theme = "b"><h2>Example Name</h2></li> 
+					<li><p><strong>Media Type:</strong><span class = "ui-li-aside">AudioCd</span></p></li> 
+					<li><p><strong>Genre/Type:</strong><span class = "ui-li-aside">Disco</span></p></li> 
+					<li><p><strong>Length:</strong><span class = "ui-li-aside">60 Minutes</span></p></li>     
+					<li><p><strong>Release Date:</strong><span class = "ui-li-aside">02-02-1999</span></p></li>     
+					<li><p><strong>Purchase Date:</strong><span class = "ui-li-aside">11-11-2001</span></p></li>     
+					<li><p><strong>Notes:</strong><span class = "ui-li-aside">This is a great CD.</span></p></li>     
+</ul>*/
+
+/*displayDetails function*/
+var displayDetails = function (obj) {
+	
+	var ulTop = $('#contentSpace').append('<ul data-role = "listview" data-inset = "true" id = "ulTop"></ul>');
+	var devider = $('#ulTop').append('<li data-role = "devider" data-theme = "b"><h2>'+obj[1].value+'</h2></li>')
+	var lsMediaType = $('#ulTop').append('<li><p><strong>Media Type:</strong><span class = "ui-li-aside">'+obj[0].value+'</span></p></li>');
+	var lsMediaGenre = $('#ulTop').append('<li><p><strong>Genre/Type:</strong><span class = "ui-li-aside">'+obj[2].value+'</span></p></li>');
+	var lsMediaLength = $('#ulTop').append('<li><p><strong>Length:</strong><span class = "ui-li-aside">'+obj[3].value+' Minutes</span></p></li>');
+	var lsMediaRelease = $('#ulTop').append('<li><p><strong>Release Date:</strong><span class = "ui-li-aside">'+obj[4].value+'</span></p></li>');
+	var lsMediaPurchase = $('#ulTop').append('<li><p><strong>Purchase Date:</strong><span class = "ui-li-aside">'+obj[5].value+'</span></p></li>');
+	var lsMediaNotes = $('#ulTop').append('<li><p><strong>Notes:</strong><span class = "ui-li-aside">'+obj[6].value+'</span></p></li>');
+};
