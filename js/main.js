@@ -2,18 +2,21 @@
 // Course month: 05.2013
 // File Purpose: Basic Start-up Template
 
+outputData();
 //#homePage starts here
 $(document).on('pagebeforeshow','#homePage', function() {
 	
 	//call outputData function
-	outputData();
+	
 	
 	//Gets the id of <li> and displays it into an alert
 	$('#ulListView').on('click', 'li', function(){
 		
 		//call displayDetails function with the obj.that was clicked on as argument
 		displayDetails(this);
-				
+		var retObj = this;
+		
+		return retObj;	
 	});
 	
 	
@@ -23,7 +26,8 @@ $(document).on('pagebeforeshow','#homePage', function() {
 
 $(document).on('pageinit', '#homePage', function(){
 	
-
+	
+	//$(document).off('load', reload());
 });
 
 //#newsFeed starts here
@@ -38,10 +42,20 @@ $(document).on('pageinit', '#aboutPage', function(){
 
 //#detailsPage starts here
 $(document).on('pageinit', '#detailsPage', function(){
+	
+	//target the deleteButton
+	$('.delBtn').click(function(){
+		alert(this.id);
+		/*on-click call deleteEntry function that takes the object's id 
+		and delete the localStorage entry with the same key value*/
+		deleteEntry(this.id);
+		
+		window.location = "#homePage";
+	});
+	
 	$('.bkbtn').click(function(){
-		
-		
-	})
+	
+	});
 });//here ends #detailsPage
 
 //#newEntryPage starts here
@@ -163,36 +177,9 @@ var filterImage = function(input) {
 	
 };
 
-//createPage is in charge of creating all the dynamic pages with details.
-var createPages = function () {
-	
-	
-}; 
-
-/* Refference code for the display function
-<ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true">
-	<li data-role="list-divider" data-link="audio"><span class = "marginLeft">Audio Entries</span><span class="ui-icon ui-icon-plus ui-icon-shadow listIcon"></span></li>
-	<li><a href="#detailsPage" data-transition = "slide"><img src = "images/smAudio.png" class="ui-li-icon ui-corner-none"/><span><p><strong>Love Is Perfect</strong></p></span><p class = "ui-li-aside">Audio Cd</p></a></li>
-</ul>*/
-
-/* Refference code for 
-<ul data-role = "listview" data-inset = "true"> 
-					<li data-role = "devider" data-theme = "b"><h2>Example Name</h2></li> 
-					<li><p><strong>Media Type:</strong><span class = "ui-li-aside">AudioCd</span></p></li> 
-					<li><p><strong>Genre/Type:</strong><span class = "ui-li-aside">Disco</span></p></li> 
-					<li><p><strong>Length:</strong><span class = "ui-li-aside">60 Minutes</span></p></li>     
-					<li><p><strong>Release Date:</strong><span class = "ui-li-aside">02-02-1999</span></p></li>     
-					<li><p><strong>Purchase Date:</strong><span class = "ui-li-aside">11-11-2001</span></p></li>     
-					<li><p><strong>Notes:</strong><span class = "ui-li-aside">This is a great CD.</span></p></li>     
-</ul>*/
-
 /*displayDetails function*/
 var displayDetails = function (obj) {
-	
-	
-	
-	
-	
+	$('.delBtn').attr('id', obj.id);
 	var ulTop = $('#contentSpace').append('<ul data-role = "listview" data-inset = "true" id = "ulTop"></ul>');
 	var devider = $('#ulTop').append('<li data-role = "devider" data-theme = "b"><h2>Name: &nbsp;'+$(obj).attr('data-entryname')+'</h2></li>');
 	var lsMediaType = $('#ulTop').append('<li><p><strong>Media Type:</strong><span class = "ui-li-aside">'+$(obj).attr('data-mediatype')+'</span></p></li>');
@@ -201,4 +188,16 @@ var displayDetails = function (obj) {
 	var lsMediaRelease = $('#ulTop').append('<li><p><strong>Release Date:</strong><span class = "ui-li-aside">'+$(obj).attr('data-rldate')+'</span></p></li>');
 	var lsMediaPurchase = $('#ulTop').append('<li><p><strong>Purchase Date:</strong><span class = "ui-li-aside">'+$(obj).attr('data-prdate')+'</span></p></li>');
 	var lsMediaNotes = $('#ulTop').append('<li><p><strong>Notes:</strong><span class = "ui-li-aside">'+$(obj).attr('data-notes')+'</span></p></li>');
+};
+
+/*deleteEntry function */
+var deleteEntry = function(obj) {
+	var confirmation = confirm("Are you sure?");
+	if(confirmation) {
+		localStorage.removeItem(obj);
+	}
+	
+	else {
+		return;
+	}
 };
