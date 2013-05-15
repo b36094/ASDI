@@ -14,9 +14,7 @@ $(document).on('pagebeforeshow','#homePage', function() {
 		
 		//call displayDetails function with the obj.that was clicked on as argument
 		displayDetails(this);
-		var retObj = this;
-		
-		return retObj;	
+			
 	});
 	
 	
@@ -42,15 +40,24 @@ $(document).on('pageinit', '#aboutPage', function(){
 
 //#detailsPage starts here
 $(document).on('pageinit', '#detailsPage', function(){
-	
+	var idToPass = this.id;
+	console.log(idToPass);
 	//target the deleteButton
 	$('.delBtn').click(function(){
-		alert(this.id);
-		/*on-click call deleteEntry function that takes the object's id 
+		
+		/*on-click calls deleteEntry function that takes the object's id 
 		and delete the localStorage entry with the same key value*/
 		deleteEntry(this.id);
 		
 		window.location = "#homePage";
+	});
+	
+	//target the editButton
+	$('.editBtn').click(function(){
+		
+		/*on-click calls editObject function that takes the object's id
+		and inserts some of the object's properties into the newEntry page*/
+		editObject(this.id);
 	});
 
 });//here ends #detailsPage
@@ -68,31 +75,52 @@ $(document).on('pageinit', '#newEntry', function(){
 		invalidHandler: function() {},		
 		submitHandler: function(randomId){
 		
-		//serialize the form data into an object 
-		var data = $myFirstForm.serializeArray();
-		
-		//stringify the data from the form object
-		var jsonObj = JSON.stringify(data);
-		
-		//add a random number for the key
-		var randomId = genRandomId();
-		
-		//add the string conversion to the localStorage with a key-value
-		localStorage.setItem(randomId,jsonObj);
-		
-		//reset the form after localStorage insertion
-		$($myFirstForm)[0].reset();
-		
-		//refresh localStorage
-		window.location = '#homePage';
+			//serialize the form data into an object 
+			var data = $myFirstForm.serializeArray();
+			
+			//stringify the data from the form object
+			var jsonObj = JSON.stringify(data);
+			
+			/*implement a switch based on this being the edit pass or the newEntry pass
+			target the submitBt's value to check which one it is 
+			*--> if is Submit generate a new key else overwrite the same key for edit*/
+			if($('#submitBt').val() === "Submit") {
+			
+				//add a random number for the key
+				var randomId = genRandomId();
+			
+				//<<debug>>
+				alert("Submit Value True"+randomId);
+							
+				//add the string conversion to the localStorage with a key-value
+				localStorage.setItem(randomId,jsonObj);
+			
+				//reset the form after localStorage insertion
+				$($myFirstForm)[0].reset();
+			
+				//refresh localStorage
+				window.location = '#homePage';
+			}
+			
+			else {
+				//<<debug>>
+				
+				console.log($('#editBtn').val);
+				//add the string conversion to the localStorage with the same key
+				localStorage.setItem(randomId,jsonObj);
+				
+				//reset the form after localStorage insertion
+				$($myFirstForm)[0].reset();
+				
+				//refresh localStorage
+				window.location = '#homePage';
+			}
 				
 		}
 	}); //here ends the validation function
 	
 	//Refresh the '#homePage' to display all the local store changes
-	$('#submitBt').click(function(){
 		
-	});	
 	
 	
 });//here ends #newEntryPage
@@ -136,9 +164,6 @@ var outputData = function(){
 		
 		//3.6. Add the localStorage object under the above category using the html format refferenced below (make sure the bbj. has an idea to target it later).
 		
-		
-		
-		console.log(parsedObj);
 	} //the for loops ends here
 
 };
@@ -177,6 +202,7 @@ var filterImage = function(input) {
 /*displayDetails function*/
 var displayDetails = function (obj) {
 	$('.delBtn').attr('id', obj.id);
+	$('.editBtn').attr('id', obj.id);
 	var ulTop = $('#contentSpace').append('<ul data-role = "listview" data-inset = "true" id = "ulTop"></ul>');
 	var devider = $('#ulTop').append('<li data-role = "devider" data-theme = "b"><h2>Name: &nbsp;'+$(obj).attr('data-entryname')+'</h2></li>');
 	var lsMediaType = $('#ulTop').append('<li><p><strong>Media Type:</strong><span class = "ui-li-aside">'+$(obj).attr('data-mediatype')+'</span></p></li>');
@@ -197,4 +223,39 @@ var deleteEntry = function(obj) {
 	else {
 		return;
 	}
+};
+
+/*editObject function goes here*/
+var editObject = function(keyObj) {
+	
+	window.location = '#newEntry';
+	alert(keyObj);
+	//Target the submitBt and change its value to Edit
+	$('#submitBt').attr('value', 'Edit');
+	
+	//Get the value under the specified key
+	var storedEditObj = localStorage.getItem(keyObj); 
+	
+	//Parse data back into an obj. to be able to access properties.
+	var parsedEditObj = JSON.parse(storedEditObj);
+	
+	//Add data into nameItem form in '#newEntry' page
+	 $('#nameItem').attr("value", parsedEditObj[1].value);
+	 
+	//Add data into #genreItem 
+	 $('#genreItem').attr("value", parsedEditObj[2].value);
+	 
+	 //Add data into #lengthItem 
+	 $('#lengthItem').attr("value", parsedEditObj[3].value);
+	 
+	 //Add data into #pubLength 
+	 $('#pubDate').attr("value", parsedEditObj[4].value);
+	 
+	 //Add data into #purchaseDate
+	 $('#purchaseDate').attr("value", parsedEditObj[5].value);
+	 
+	 //Add data into #notes
+	 $('textarea[id = notes]').val(parsedEditObj[6].value);
+	 
+	 
 };
