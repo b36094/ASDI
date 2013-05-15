@@ -2,12 +2,12 @@
 // Course month: 05.2013
 // File Purpose: Basic Start-up Template
 
-outputData();
+
 //#homePage starts here
 $(document).on('pagebeforeshow','#homePage', function() {
 	
 	//call outputData function
-	
+	outputData();
 	
 	//Gets the id of <li> and displays it into an alert
 	$('#ulListView').on('click', 'li', function(){
@@ -52,10 +52,7 @@ $(document).on('pageinit', '#detailsPage', function(){
 		
 		window.location = "#homePage";
 	});
-	
-	$('.bkbtn').click(function(){
-	
-	});
+
 });//here ends #detailsPage
 
 //#newEntryPage starts here
@@ -95,7 +92,7 @@ $(document).on('pageinit', '#newEntry', function(){
 	//Refresh the '#homePage' to display all the local store changes
 	$('#submitBt').click(function(){
 		
-});	
+	});	
 	
 	
 });//here ends #newEntryPage
