@@ -12,14 +12,15 @@ $(document).on('pagebeforeshow','#homePage', function() {
 		
 		if (confirm) {
 			$.ajax ({
-				url: "xhr/json.js",
+				url: "xhr/JSONFile.json",
 				type: "GET",
 				datatype: "json",
 				success: function(response) {
-					for (var i = 0, j = response.length; i < j; i++) {
-						console.log(i);
-					}
+					
+					console.log(response);
+					
 					alert ("Success! I loaded some data for you.");
+					
 				}
 			});
 		
@@ -123,11 +124,12 @@ $(document).on('pageinit', '#newEntry', function(){
 			}
 			
 			else {
-				//<<debug>>
 				
-				console.log($('#editBtn').val);
+				var randomId2 = $('#submitBt').data('key');
+				
+				console.log(randomId2);
 				//add the string conversion to the localStorage with the same key
-				localStorage.setItem(randomId,jsonObj);
+				localStorage.setItem(randomId2,jsonObj);
 				
 				//reset the form after localStorage insertion
 				$($myFirstForm)[0].reset();
@@ -157,33 +159,33 @@ var genRandomId = function(){
 var outputData = function(){
 	//1. Get the lenght of the localStorage
 	var localStL = localStorage.length;
-	
+
 	//2. Create a <ul> filter that holds all the <li>
 	var ulListView = $('#container').append('<ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true" id = "ulListView"></ul>');
-	
+
 	//3. Loop through the length of localStorage
 	for(var i = 0, j = localStL; i < j; i ++) {
-		
+
 		//3.1. Get key-value pare
 		var storedKey = localStorage.key(i); //get the key to refference for the value
 		var storedObj = localStorage.getItem(storedKey); //get the value under the specified key
-		
+
 		//3.2. Parse data back into an obj. to be able to access properties.
 		var parsedObj = JSON.parse(storedObj);
-		
+
 		//3.3. Add the id property to parsedObj for future refference
 		parsedObj.id = storedKey;
-		
+
 		//3.4. Create a <li> tag that holds the localStorage object
 		var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'" data-entryname ="'+parsedObj[1].value+'" data-mediatype ="'+parsedObj[0].value+'" data-genre ="'+parsedObj[2].value+'" data-length = "'+parsedObj[3].value+'" data-rldate = "'+parsedObj[4].value+'" data-prdate = "'+parsedObj[5].value+'" data-notes = "'+parsedObj[6].value+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj[0].value)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj[1].value+'</strong></p></span><p class = "ui-li-aside">'+parsedObj[0].value+'</p></a></li>');
-		
+
 		//This line refreshes the listview attribute in jqm (there are some issues in the #homePage with the way they display)
 		insideLi.listview().listview('refresh');
-		
+
 		//3.5. Check if a devider with the object's '<optgroup label> already exists, if not create one ["audio", "video", "data", "other"]
-		
+
 		//3.6. Add the localStorage object under the above category using the html format refferenced below (make sure the bbj. has an idea to target it later).
-		
+
 	} //the for loops ends here
 
 };
@@ -249,9 +251,12 @@ var deleteEntry = function(obj) {
 var editObject = function(keyObj) {
 	
 	window.location = '#newEntry';
-	alert(keyObj);
+	
 	//Target the submitBt and change its value to Edit
 	$('#submitBt').attr('value', 'Edit');
+	
+	//Add the attr key to the editBtn
+	$('#submitBt').data('key', keyObj);
 	
 	//Get the value under the specified key
 	var storedEditObj = localStorage.getItem(keyObj); 
@@ -280,5 +285,5 @@ var editObject = function(keyObj) {
 	 
 };
 
-//Add data from json
+
 
