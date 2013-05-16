@@ -282,7 +282,10 @@ var editObject = function(keyObj) {
 	 //Add data into #notes
 	 $('textarea[id = notes]').val(parsedEditObj[6].value);
 	 
-	 
+	 //Gets the value of the parsed object and forces the dropdown 
+	 //menu (from the edit page) to display the same mediaType
+	 var mediaOption = parsedEditObj[0].value;
+	 $('#mediaChoice').val(mediaOption);
 };
 
 
