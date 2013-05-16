@@ -4,12 +4,15 @@
 
 
 //#homePage starts here
-$(document).on('pagebeforeshow','#homePage', function() {
+$('#ulListView').off('click', 'li').on('click', 'li', function() {
 	
+	//Checks to see if the localStorage is empty
 	if (localStorage.length == 0) {
 		
+		//If is empty asks the user to add pre-loaded entries
 		confirm("Local Storage is empty. Do you want to load default data?");
 		
+		//Ajax call 
 		if (confirm) {
 			$.ajax ({
 				url: "xhr/JSONFile.json",
@@ -110,9 +113,6 @@ $(document).on('pageinit', '#newEntry', function(){
 				//add a random number for the key
 				var randomId = genRandomId();
 			
-				//<<debug>>
-				alert("Submit Value True"+randomId);
-							
 				//add the string conversion to the localStorage with a key-value
 				localStorage.setItem(randomId,jsonObj);
 			
@@ -282,8 +282,8 @@ var editObject = function(keyObj) {
 	 //Add data into #notes
 	 $('textarea[id = notes]').val(parsedEditObj[6].value);
 	 
-	 //Gets the value of the parsed object and forces the dropdown 
-	 //menu (from the edit page) to display the same mediaType
+	 //Gets the medidType value of the parsed object and forces the dropdown 
+	 //menu (from the edit page) to display the same mediaType, when editing an obj.
 	 var mediaOption = parsedEditObj[0].value;
 	 $('#mediaChoice').val(mediaOption);
 };
