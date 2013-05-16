@@ -4,7 +4,7 @@
 
 
 //#homePage starts here
-$('#ulListView').off('click', 'li').on('click', 'li', function() {
+$('#ulListView').on('click', 'li', function() {
 	
 	//Checks to see if the localStorage is empty
 	if (localStorage.length == 0) {
