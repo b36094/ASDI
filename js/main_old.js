@@ -64,6 +64,7 @@ $(document).on('pageinit', '#aboutPage', function(){
 
 //#detailsPage starts here
 $(document).on('pageinit', '#detailsPage', function(){
+	$('#ulTop').listview().listview('refresh');
 	var idToPass = this.id;
 	console.log(idToPass);
 	//target the deleteButton
@@ -85,10 +86,6 @@ $(document).on('pageinit', '#detailsPage', function(){
 	});
 
 });//here ends #detailsPage
-
-$(document).on('pagebeforeshow', '#detailsPage', function(){
-	$('#ulTop').listview().listview('refresh');
-});
 
 //#newEntryPage starts here
 $(document).on('pageinit', '#newEntry', function(){
@@ -163,34 +160,35 @@ var genRandomId = function(){
 var outputData = function(){
 	//1. Get the lenght of the localStorage
 	var localStL = localStorage.length;
-
+	
+	//2. Clean container
 	$('#container').empty();
 	
-	//2. Create a <ul> filter that holds all the <li>
+	//3. Create a <ul> filter that holds all the <li>
 	var ulListView = $('#container').append('<ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true" id = "ulListView"></ul>');
-
-	//3. Loop through the length of localStorage
+	
+	//4. Loop through the length of localStorage
 	for(var i = 0, j = localStL; i < j; i ++) {
 
-		//3.1. Get key-value pare
+		//4.1. Get key-value pare
 		var storedKey = localStorage.key(i); //get the key to refference for the value
 		var storedObj = localStorage.getItem(storedKey); //get the value under the specified key
 
-		//3.2. Parse data back into an obj. to be able to access properties.
+		//4.2. Parse data back into an obj. to be able to access properties.
 		var parsedObj = JSON.parse(storedObj);
 
-		//3.3. Add the id property to parsedObj for future refference
+		//4.3. Add the id property to parsedObj for future refference
 		parsedObj.id = storedKey;
 
-		//3.4. Create a <li> tag that holds the localStorage object
+		//4.4. Create a <li> tag that holds the localStorage object
 		var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'" data-entryname ="'+parsedObj[1].value+'" data-mediatype ="'+parsedObj[0].value+'" data-genre ="'+parsedObj[2].value+'" data-length = "'+parsedObj[3].value+'" data-rldate = "'+parsedObj[4].value+'" data-prdate = "'+parsedObj[5].value+'" data-notes = "'+parsedObj[6].value+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj[0].value)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj[1].value+'</strong></p></span><p class = "ui-li-aside">'+parsedObj[0].value+'</p></a></li>');
 
 		//This line refreshes the listview attribute in jqm (there are some issues in the #homePage with the way they display)
 		insideLi.listview().listview('refresh');
 
-		//3.5. Check if a devider with the object's '<optgroup label> already exists, if not create one ["audio", "video", "data", "other"]
+		//4.5. Check if a devider with the object's '<optgroup label> already exists, if not create one ["audio", "video", "data", "other"]
 
-		//3.6. Add the localStorage object under the above category using the html format refferenced below (make sure the bbj. has an idea to target it later).
+		//4.6. Add the localStorage object under the above category using the html format refferenced below (make sure the bbj. has an idea to target it later).
 
 	} //the for loops ends here
 
@@ -231,17 +229,15 @@ var filterImage = function(input) {
 var displayDetails = function (obj) {
 	$('.delBtn').attr('id', obj.id);
 	$('.editBtn').attr('id', obj.id);
-	
 	$('#contentSpace').empty();
-	
-	var ulTop = $('#contentSpace').append('<ul data-role="listview" data-inset="true" id="ulTop"></ul>');
+	var ulTop = $('#contentSpace').append('<ul data-role = "listview" data-inset = "true" id = "ulTop"></ul>');
 	var devider = $('#ulTop').append('<li data-role = "devider" data-theme = "b"><h2>Name: &nbsp;'+$(obj).attr('data-entryname')+'</h2></li>');
 	var lsMediaType = $('#ulTop').append('<li><p><strong>Media Type:</strong><span class = "ui-li-aside">'+$(obj).attr('data-mediatype')+'</span></p></li>');
 	var lsMediaGenre = $('#ulTop').append('<li><p><strong>Genre/Type:</strong><span class = "ui-li-aside">'+$(obj).attr('data-genre')+'</span></p></li>');
 	var lsMediaLength = $('#ulTop').append('<li><p><strong>Length:</strong><span class = "ui-li-aside">'+$(obj).attr('data-length')+'</span></p></li>');
 	var lsMediaRelease = $('#ulTop').append('<li><p><strong>Release Date:</strong><span class = "ui-li-aside">'+$(obj).attr('data-rldate')+'</span></p></li>');
 	var lsMediaPurchase = $('#ulTop').append('<li><p><strong>Purchase Date:</strong><span class = "ui-li-aside">'+$(obj).attr('data-prdate')+'</span></p></li>');
-	var lsMediaNotes = $('#ulTop').append('<li><p><strong>Notes:</strong><span class = "ui-li-aside">'+$(obj).attr('data-notes')+'</span></p></li>');	
+	var lsMediaNotes = $('#ulTop').append('<li><p><strong>Notes:</strong><span class = "ui-li-aside">'+$(obj).attr('data-notes')+'</span></p></li>');
 };
 
 /*deleteEntry function */
