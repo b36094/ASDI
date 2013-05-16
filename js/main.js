@@ -6,16 +6,38 @@
 //#homePage starts here
 $(document).on('pagebeforeshow','#homePage', function() {
 	
-	//call outputData function
-	outputData();
-	
-	//Gets the id of <li> and displays it into an alert
-	$('#ulListView').on('click', 'li', function(){
+	if (localStorage.length == 0) {
 		
-		//call displayDetails function with the obj.that was clicked on as argument
-		displayDetails(this);
+		confirm("Local Storage is empty. Do you want to load default data?");
+		
+		if (confirm) {
+			$.ajax ({
+				url: "xhr/json.js",
+				type: "GET",
+				datatype: "json",
+				success: function(response) {
+					for (var i = 0, j = response.length; i < j; i++) {
+						console.log(i);
+					}
+					alert ("Success! I loaded some data for you.");
+				}
+			});
+		
+		}
+	}
+	
+	else {
+		//call outputData function
+		outputData();
+	
+		//Gets the id of <li> and displays it into an alert
+		$('#ulListView').on('click', 'li', function(){
+		
+			//call displayDetails function with the obj.that was clicked on as argument
+			displayDetails(this);
 			
-	});
+		});
+	}
 	
 	
 	
@@ -23,9 +45,7 @@ $(document).on('pagebeforeshow','#homePage', function() {
 });//here ends #homePage
 
 $(document).on('pageinit', '#homePage', function(){
-	
-	
-	//$(document).off('load', reload());
+
 });
 
 //#newsFeed starts here
@@ -259,3 +279,6 @@ var editObject = function(keyObj) {
 	 
 	 
 };
+
+//Add data from json
+
