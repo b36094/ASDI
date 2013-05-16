@@ -4,7 +4,7 @@
 
 
 //#homePage starts here
-$('#ulListView').on('click', 'li', function() {
+$(document).on('pagebeforeshow', '#homePage', function(){
 	
 	//Checks to see if the localStorage is empty
 	if (localStorage.length == 0) {
