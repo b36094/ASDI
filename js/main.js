@@ -35,7 +35,7 @@ $(document).on('pagebeforeshow', '#homePage', function(){
 		outputData();
 	
 		//Gets the id of <li> and displays it into an alert
-		$('#ulListView').on('click', 'li', function(){
+		$('#ulListView').off('click', 'li').on('click', 'li', function(){
 		
 			//call displayDetails function with the obj.that was clicked on as argument
 			displayDetails(this);
