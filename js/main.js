@@ -299,14 +299,14 @@ var editObject = function(keyObj) {
 
 
 //fillIn function creates pre-loaded data
-var fillIn = function (randomId) {
+var fillIn = function () {
 	
 	for (var i = 0; i < 4; i++) {
 		
 		var funcKey = genRandomId();
 		var keyValue = '[{"name":"mediaChoice","value":"DataDvd"},{"name":"nameItem","value":"asdf"},{"name":"genreItem","value":"asdf"},{"name":"lengthItem","value":"3"},{"name":"pubDate","value":""},{"name":"purchaseDate","value":""},{"name":"noteName","value":"asf"}]"'
 		
-		localStorage.setItem(funkKey,keyValue);
+		localStorage.setItem(funcKey,keyValue);
 		
 		console.log(funcKey);
 	}
