@@ -299,7 +299,7 @@ var editObject = function(keyObj) {
 
 
 //fillIn function creates pre-loaded data
-var fillIn = function () {
+var fillIn = function (randomId) {
 	
 	for (var i = 0; i < 4; i++) {
 		
