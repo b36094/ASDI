@@ -20,8 +20,8 @@ $(document).on('pagebeforeshow', '#homePage', function(){
 				datatype: "json",
 				success: function(response) {
 					
-					console.log(response);
-					
+					//console.log(response);
+					fillIn();
 					alert ("Success! I loaded some data for you.");
 					
 				}
@@ -297,5 +297,21 @@ var editObject = function(keyObj) {
 	 $('#mediaChoice').val(mediaOption);
 };
 
+
+//fillIn function creates pre-loaded data
+var fillIn = function () {
+	
+	for (var i = 0; i < 4; i++) {
+		
+		var funcKey = genRandomId();
+		var keyValue = '[{"name":"mediaChoice","value":"DataDvd"},{"name":"nameItem","value":"asdf"},{"name":"genreItem","value":"asdf"},{"name":"lengthItem","value":"3"},{"name":"pubDate","value":""},{"name":"purchaseDate","value":""},{"name":"noteName","value":"asf"}]"'
+		
+		localStorage.setItem(funkKey,keyValue);
+		
+		console.log(funcKey);
+	}
+	
+	
+}
 
 
