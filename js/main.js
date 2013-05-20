@@ -15,7 +15,7 @@ $(document).on('pagebeforeshow', '#homePage', function(){
 		//Ajax call 
 		if (confirm) {
 			$.ajax ({
-				url: "xhr/JSONFile.json",
+				url: "https://letwoulderelleatendusese:HNt5bGNcEHXHIewbxBGylvYT.cloudant.com/hml/",
 				type: "GET",
 				datatype: "json",
 				success: function(response) {
@@ -103,8 +103,18 @@ $(document).on('pageinit', '#newEntry', function(){
 		invalidHandler: function() {},		
 		submitHandler: function(randomId){
 		
-			//serialize the form data into an object 
-			var data = $myFirstForm.serializeArray();
+			//serialize the form data into the data object 
+			var data ={};
+			data.mediaChoice = ["MediaChoice", $('#mediaChoice').val()];
+			data.nameItem = ["NameItem", $('#nameItem').val()];
+			data.genreItem = ["GenreItem", $('#genreItem').val()];
+			data.lengthItem = ["LengthItem", $('#lengthItem').val()];
+			data.pubDate = ["PubDate", $('#pubDate').val()];
+			data.purchaseDate = ["PurchaseDate", $('#purchaseDate').val()];
+			data.notesLabel = ["Notes", $('#notes').val()];
+			
+			
+			//create data object with proper attributes
 			
 			//stringify the data from the form object
 			var jsonObj = JSON.stringify(data);
@@ -183,7 +193,9 @@ var outputData = function(){
 		parsedObj.id = storedKey;
 
 		//3.4. Create a <li> tag that holds the localStorage object
-		var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'" data-entryname ="'+parsedObj[1].value+'" data-mediatype ="'+parsedObj[0].value+'" data-genre ="'+parsedObj[2].value+'" data-length = "'+parsedObj[3].value+'" data-rldate = "'+parsedObj[4].value+'" data-prdate = "'+parsedObj[5].value+'" data-notes = "'+parsedObj[6].value+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj[0].value)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj[1].value+'</strong></p></span><p class = "ui-li-aside">'+parsedObj[0].value+'</p></a></li>');
+		console.log(parsedObj);
+		//var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'" data-entryname ="'+parsedObj.nameItem[1]+'" data-mediatype ="'+parsedObj.mediaChoice[1]+'" data-genre ="'+parsedObj.genreItem[1]+'" data-length = "'+parsedObj.lengthItem[1]+'" data-rldate = "'+parsedObj.pubDate[1]+'" data-prdate = "'+parsedObj.purchasedDate[1]+'" data-notes = "'+parsedObj.notesLabel[1]+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj.mediaType[1])+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj.nameItem[1]+'</strong></p></span><p class = "ui-li-aside">'+parsedObj.mediaType[1]+'</p></a></li>');
+		var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'" data-entryname ="'+parsedObj.nameItem[1]+'" data-mediatype ="'+parsedObj.mediaChoice[1]+'" data-genre ="'+parsedObj.genreItem[1]+'" data-length = "'+parsedObj.lengthItem[1]+'" data-rldate = "'+parsedObj.pubDate[1]+'" data-prdate = "'+parsedObj.purchaseDate+'" data-notes = "'+parsedObj.notesLabel[1]+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj.mediaChoice[1])+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj.nameItem[1]+'</strong></p></span><p class = "ui-li-aside">'+parsedObj.mediaChoice[1]+'</p></a></li>');
 
 		//This line refreshes the listview attribute in jqm (there are some issues in the #homePage with the way they display)
 		insideLi.listview().listview('refresh');
