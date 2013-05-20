@@ -15,7 +15,7 @@ $(document).on('pagebeforeshow', '#homePage', function(){
 		//Ajax call 
 		if (confirm) {
 			$.ajax ({
-				url: "xhr/JSONFile.json",
+				url: "https://letwoulderelleatendusese:HNt5bGNcEHXHIewbxBGylvYT.cloudant.com/hml/",
 				type: "GET",
 				datatype: "json",
 				success: function(response) {
@@ -103,8 +103,18 @@ $(document).on('pageinit', '#newEntry', function(){
 		invalidHandler: function() {},		
 		submitHandler: function(randomId){
 		
-			//serialize the form data into an object 
-			var data = $myFirstForm.serializeArray();
+			//serialize the form data into the data object 
+			var data ={};
+			data.mediaChoice = ["MediaChoice", $('#mediaChoice').val()];
+			data.nameItem = ["NameItem", $('#nameItem').val()];
+			data.genreItem = ["GenreItem", $('#genreItem').val()];
+			data.lengthItem = ["LengthItem", $('#lengthItem').val()];
+			data.pubDate = ["PubDate", $('#pubDate').val()];
+			data.purchaseDate = ["PurchaseDate", $('#purchaseDate').val()];
+			data.notesLabel = ["Notes", $('#notes').val()];
+			
+			
+			//create data object with proper attributes
 			
 			//stringify the data from the form object
 			var jsonObj = JSON.stringify(data);
