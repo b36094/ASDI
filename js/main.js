@@ -6,43 +6,50 @@
 //#homePage starts here
 $(document).on('pagebeforeshow', '#homePage', function(){
 	
+	//call outputData function
+	outputData();
+	
+	$('#ulListView').listview().listview('refresh');
 	//Checks to see if the localStorage is empty
 	if (localStorage.length == 0) {
 		
 		//If is empty asks the user to add pre-loaded entries
-		confirm("Local Storage is empty. Do you want to load default data?");
+		var cfm = confirm("Local Storage is empty. Do you want to load default data?");
 		
 		//Ajax call 
-		if (confirm) {
+		if (!cfm) {
+			outputData();
+		
+		}
+		else {
+		
 			$.ajax ({
 				url: "xhr/JSONFile.json",
 				type: "GET",
 				datatype: "json",
 				success: function(response) {
 					
-					//console.log(response);
-					fillIn();
-					alert ("Success! I loaded some data for you.");
+					for(var i in response){
+						var newId = Math.floor(Math.random() * 1000000001);
+						localStorage.setItem(newId, JSON.stringify(response[i]));
+						
+					}
 					
+					alert ("Success! I loaded some data for you.");
+					window.location.reload(true);
 				}
 			});
-		
+			
 		}
 	}
 	
-	else {
-		//call outputData function
-		outputData();
-	
-		//Gets the id of <li> and displays it into an alert
-		$('#ulListView').off('click', 'li').on('click', 'li', function(){
+	//Gets the id of <li> and displays it into an alert
+	$('#ulListView').off('click', 'li').on('click', 'li', function(){
 		
-			//call displayDetails function with the obj.that was clicked on as argument
-			displayDetails(this);
+		//call displayDetails function with the obj.that was clicked on as argument
+		displayDetails(this);
 			
-		});
-	}
-	
+	});
 	
 	
 	
@@ -81,6 +88,9 @@ $(document).on('pageinit', '#detailsPage', function(){
 		/*on-click calls editObject function that takes the object's id
 		and inserts some of the object's properties into the newEntry page*/
 		editObject(this.id);
+		
+		window.location = "#newEntry";
+		window.location.reload(true);
 	});
 
 });//here ends #detailsPage
@@ -140,7 +150,7 @@ $(document).on('pageinit', '#newEntry', function(){
 				
 				var randomId2 = $('#submitBt').data('key');
 				
-				console.log(randomId2);
+				
 				//add the string conversion to the localStorage with the same key
 				localStorage.setItem(randomId2,jsonObj);
 				
@@ -192,8 +202,6 @@ var outputData = function(){
 		parsedObj.id = storedKey;
 
 		//3.4. Create a <li> tag that holds the localStorage object
-		console.log(parsedObj);
-		
 		var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'" data-entryname ="'+parsedObj.nameItem[1]+'" data-mediatype ="'+parsedObj.mediaChoice[1]+'" data-genre ="'+parsedObj.genreItem[1]+'" data-length = "'+parsedObj.lengthItem[1]+'" data-rldate = "'+parsedObj.pubDate[1]+'" data-prdate = "'+parsedObj.purchaseDate[1]+'" data-notes = "'+parsedObj.notesLabel[1]+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj.mediaChoice[1])+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj.nameItem[1]+'</strong></p></span><p class = "ui-li-aside">'+parsedObj.mediaChoice[1]+'</p></a></li>');
 
 		//This line refreshes the listview attribute in jqm (there are some issues in the #homePage with the way they display)
@@ -305,7 +313,7 @@ var editObject = function(keyObj) {
 	 //Gets the medidType value of the parsed object and forces the dropdown 
 	 //menu (from the edit page) to display the same mediaType, when editing an obj.
 	 var mediaOption = parsedEditObj.mediaChoice[1];
-	 $('#mediaChoice').val(mediaOption);
+	 $('#mediaChoice').val(mediaOption); 
 };
 
 

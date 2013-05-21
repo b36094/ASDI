@@ -1,12 +1,23 @@
-{
-	"mediaChoice":["MediaChoice","MemoryStick"],
-	"nameItem":["NameItem","Iron Man_2"],
-	"genreItem":["GenreItem","Action"],
-	"lengthItem":["LengthItem","120"],
-	"pubDate":["PubDate","2013-05-06"],
-	"purchaseDate":["PurchaseDate","2013-05-16"],
-	"notesLabel":["Notes","asdf"]
-	
-}
-
+[
+	{
+		"mediaChoice":["MediaChoice","MemoryStick"],
+		"nameItem":["NameItem","Iron Man_2"],
+		"genreItem":["GenreItem","Action"],
+		"lengthItem":["LengthItem","120"],
+		"pubDate":["PubDate","2013-05-06"],
+		"purchaseDate":["PurchaseDate","2013-05-16"],
+		"notesLabel":["Notes","asdf"]
+		
+	},
+	{
+		"mediaChoice":["MediaChoice","VideoDvd"],
+		"nameItem":["NameItem","Iron Man_2"],
+		"genreItem":["GenreItem","Action"],
+		"lengthItem":["LengthItem","120"],
+		"pubDate":["PubDate","2013-05-06"],
+		"purchaseDate":["PurchaseDate","2013-05-16"],
+		"notesLabel":["Notes","asdfccd"]
+		
+	}
+]
 
