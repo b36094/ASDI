@@ -1,41 +1,12 @@
-[
-    
-    {
-        "mediaType": "VideoCd",
-        "name": "Vacation 1998 MPEG4",
-        "genreItem": "Memories",
-        "lengthItem": "60",
-        "pubDate": "02-02-1999",
-        "purchaseDate":	"11-11-2004",
-        "notes": "This is audio tape."
-    },
-	{
-        "mediaType": "VideoCd",
-        "name": "Vacation 1998 MPEG4",
-        "genreItem": "Memories",
-        "lengthItem": "60",
-        "pubDate": "02-02-1999",
-        "purchaseDate":	"11-11-2004",
-        "notes": "This is audio tape."
-    },
-    {
-        "mediaType": "VideoCd",
-        "name": "Vacation 1998 MPEG4",
-        "genreItem": "Memories",
-        "lengthItem": "60",
-        "pubDate": "02-02-1999",
-        "purchaseDate":	"11-11-2004",
-        "notes": "This is audio tape."
-    },
-	{
-        "mediaType": "VideoCd",
-        "name": "Vacation 1998 MPEG4",
-        "genreItem": "Memories",
-        "lengthItem": "60",
-        "pubDate": "02-02-1999",
-        "purchaseDate":	"11-11-2004",
-        "notes": "This is audio tape."
-    }
-]
+{
+	"mediaChoice":["MediaChoice","MemoryStick"],
+	"nameItem":["NameItem","Iron Man_2"],
+	"genreItem":["GenreItem","Action"],
+	"lengthItem":["LengthItem","120"],
+	"pubDate":["PubDate","2013-05-06"],
+	"purchaseDate":["PurchaseDate","2013-05-16"],
+	"notesLabel":["Notes","asdf"]
+	
+}
 
 

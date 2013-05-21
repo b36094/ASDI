@@ -15,7 +15,7 @@ $(document).on('pagebeforeshow', '#homePage', function(){
 		//Ajax call 
 		if (confirm) {
 			$.ajax ({
-				url: "https://letwoulderelleatendusese:HNt5bGNcEHXHIewbxBGylvYT.cloudant.com/hml/",
+				url: "xhr/JSONFile.json",
 				type: "GET",
 				datatype: "json",
 				success: function(response) {
@@ -64,8 +64,7 @@ $(document).on('pageinit', '#aboutPage', function(){
 
 //#detailsPage starts here
 $(document).on('pageinit', '#detailsPage', function(){
-	var idToPass = this.id;
-	console.log(idToPass);
+		
 	//target the deleteButton
 	$('.delBtn').click(function(){
 		
@@ -194,8 +193,8 @@ var outputData = function(){
 
 		//3.4. Create a <li> tag that holds the localStorage object
 		console.log(parsedObj);
-		//var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'" data-entryname ="'+parsedObj.nameItem[1]+'" data-mediatype ="'+parsedObj.mediaChoice[1]+'" data-genre ="'+parsedObj.genreItem[1]+'" data-length = "'+parsedObj.lengthItem[1]+'" data-rldate = "'+parsedObj.pubDate[1]+'" data-prdate = "'+parsedObj.purchasedDate[1]+'" data-notes = "'+parsedObj.notesLabel[1]+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj.mediaType[1])+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj.nameItem[1]+'</strong></p></span><p class = "ui-li-aside">'+parsedObj.mediaType[1]+'</p></a></li>');
-		var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'" data-entryname ="'+parsedObj.nameItem[1]+'" data-mediatype ="'+parsedObj.mediaChoice[1]+'" data-genre ="'+parsedObj.genreItem[1]+'" data-length = "'+parsedObj.lengthItem[1]+'" data-rldate = "'+parsedObj.pubDate[1]+'" data-prdate = "'+parsedObj.purchaseDate+'" data-notes = "'+parsedObj.notesLabel[1]+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj.mediaChoice[1])+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj.nameItem[1]+'</strong></p></span><p class = "ui-li-aside">'+parsedObj.mediaChoice[1]+'</p></a></li>');
+		
+		var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'" data-entryname ="'+parsedObj.nameItem[1]+'" data-mediatype ="'+parsedObj.mediaChoice[1]+'" data-genre ="'+parsedObj.genreItem[1]+'" data-length = "'+parsedObj.lengthItem[1]+'" data-rldate = "'+parsedObj.pubDate[1]+'" data-prdate = "'+parsedObj.purchaseDate[1]+'" data-notes = "'+parsedObj.notesLabel[1]+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj.mediaChoice[1])+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj.nameItem[1]+'</strong></p></span><p class = "ui-li-aside">'+parsedObj.mediaChoice[1]+'</p></a></li>');
 
 		//This line refreshes the listview attribute in jqm (there are some issues in the #homePage with the way they display)
 		insideLi.listview().listview('refresh');
@@ -286,44 +285,30 @@ var editObject = function(keyObj) {
 	var parsedEditObj = JSON.parse(storedEditObj);
 	
 	//Add data into nameItem form in '#newEntry' page
-	 $('#nameItem').attr("value", parsedEditObj[1].value);
+	 $('#nameItem').attr("value", parsedEditObj.nameItem[1]);
 	 
 	//Add data into #genreItem 
-	 $('#genreItem').attr("value", parsedEditObj[2].value);
+	 $('#genreItem').attr("value", parsedEditObj.genreItem[1]);
 	 
 	 //Add data into #lengthItem 
-	 $('#lengthItem').attr("value", parsedEditObj[3].value);
+	 $('#lengthItem').attr("value", parsedEditObj.lengthItem[1]);
 	 
 	 //Add data into #pubLength 
-	 $('#pubDate').attr("value", parsedEditObj[4].value);
+	 $('#pubDate').attr("value", parsedEditObj.pubDate[1]);
 	 
 	 //Add data into #purchaseDate
-	 $('#purchaseDate').attr("value", parsedEditObj[5].value);
+	 $('#purchaseDate').attr("value", parsedEditObj.purchaseDate[1]);
 	 
 	 //Add data into #notes
-	 $('textarea[id = notes]').val(parsedEditObj[6].value);
+	 $('textarea[id = notes]').val(parsedEditObj.notesLabel[1]);
 	 
 	 //Gets the medidType value of the parsed object and forces the dropdown 
 	 //menu (from the edit page) to display the same mediaType, when editing an obj.
-	 var mediaOption = parsedEditObj[0].value;
+	 var mediaOption = parsedEditObj.mediaChoice[1];
 	 $('#mediaChoice').val(mediaOption);
 };
 
 
-//fillIn function creates pre-loaded data
-var fillIn = function () {
-	
-	for (var i = 0; i < 4; i++) {
-		
-		var funcKey = genRandomId();
-		var keyValue = '[{"name":"mediaChoice","value":"DataDvd"},{"name":"nameItem","value":"asdf"},{"name":"genreItem","value":"asdf"},{"name":"lengthItem","value":"3"},{"name":"pubDate","value":""},{"name":"purchaseDate","value":""},{"name":"noteName","value":"asf"}]"'
-		
-		localStorage.setItem(funcKey,keyValue);
-		
-		console.log(funcKey);
-	}
-	
-	
-}
+
 
 
