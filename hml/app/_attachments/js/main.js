@@ -24,19 +24,28 @@ $(document).on('pagebeforeshow', '#homePage', function(){
 		else {
 		
 			$.ajax ({
-				url: "https://nactusberrilli.cloudant.com/hml/_all_docs?jsonp=mycall",
-				type: "GET",
-				datatype: "jsonp",
-				success: function(response) {
+				url: "_view/entries",
+				dataType: "json",
+				success: function(data) {
 					
-					for(var i in response){
-						var newId = Math.floor(Math.random() * 1000000001);
-						localStorage.setItem(newId, JSON.stringify(response[i]));
+					//2. Create a <ul> filter that holds all the <li>
+					var ulListView = $('#container').append('<ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true" id = "ulListView"></ul>');
+					$.each(data.rows, function(index, entry) {
+						var nameItem = entry.value.nameItem[1];
+						var genreItem = entry.value.genreItem[1];
+						var lengthItem = entry.value.lengthItem[1];
+						var mediaChoice = entry.value.mediaChoice[1];
+						var pubDate = entry.value.pubDate[1];
+						var purchaseDate = entry.value.purchaseDate[1];
+						var notes = entry.value.notesLabel[1];
+						var id = entry.id;
+						//console.log(id);
 						
-					}
-					
-					alert ("Success! I loaded some data for you.");
-					window.location.reload(true);
+						//3.4. Create a <li> tag that holds the localStorage object
+						var insideLi = $('#ulListView').append('<li id = "'+id+'" data-entryname ="'+nameItem+'" data-mediatype ="'+mediaChoice+'" data-genre ="'+genreItem+'" data-length = "'+lengthItem+'" data-rldate = "'+pubDate+'" data-prdate = "'+purchaseDate+'" data-notes = "'+notesLabel+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(mediaChoice)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+nameItem+'</strong></p></span><p class = "ui-li-aside">'+mediaChoice+'</p></a></li>');
+					});
+					$('#ulListView').listview('refresh');
+					//window.location.reload(true);
 				}
 			});
 			

@@ -1,0 +1,10 @@
+{
+  "env": {
+    "local": {
+      "db": "http://127.0.0.1:5984/hml"
+   	},
+   	"cloudant": {
+   	  "db": "http://quinguallyfiterapapperes:cX822n5wTmc2c5VA1DMoHjUP@nactusberrilli.cloudant.com/hml"
+   	}
+  }
+}
