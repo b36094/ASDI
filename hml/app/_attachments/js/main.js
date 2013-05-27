@@ -6,51 +6,14 @@
 //#homePage starts here
 $(document).on('pagebeforeshow', '#homePage', function(){
 	
+	
+	
 	//call outputData function
 	outputData();
 	
-	$('#ulListView').listview().listview('refresh');
-	//Checks to see if the localStorage is empty
-	if (localStorage.length == 0) {
-		
-		//If is empty asks the user to add pre-loaded entries
-		var cfm = confirm("Local Storage is empty. Do you want to load default data?");
-		
-		//Ajax call 
-		if (!cfm) {
-			outputData();
-		
-		}
-		else {
-		
-			$.ajax ({
-				url: "_view/entries",
-				dataType: "json",
-				success: function(data) {
-					
-					//2. Create a <ul> filter that holds all the <li>
-					var ulListView = $('#container').append('<ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true" id = "ulListView"></ul>');
-					$.each(data.rows, function(index, entry) {
-						var nameItem = entry.value.nameItem[1];
-						var genreItem = entry.value.genreItem[1];
-						var lengthItem = entry.value.lengthItem[1];
-						var mediaChoice = entry.value.mediaChoice[1];
-						var pubDate = entry.value.pubDate[1];
-						var purchaseDate = entry.value.purchaseDate[1];
-						var notes = entry.value.notesLabel[1];
-						var id = entry.id;
-						//console.log(id);
-						
-						//3.4. Create a <li> tag that holds the localStorage object
-						var insideLi = $('#ulListView').append('<li id = "'+id+'" data-entryname ="'+nameItem+'" data-mediatype ="'+mediaChoice+'" data-genre ="'+genreItem+'" data-length = "'+lengthItem+'" data-rldate = "'+pubDate+'" data-prdate = "'+purchaseDate+'" data-notes = "'+notesLabel+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(mediaChoice)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+nameItem+'</strong></p></span><p class = "ui-li-aside">'+mediaChoice+'</p></a></li>');
-					});
-					$('#ulListView').listview('refresh');
-					//window.location.reload(true);
-				}
-			});
-			
-		}
-	}
+	//refresh ulListView
+	$('#ulListView').listview().listview('refresh');		
+
 	
 	//Gets the id of <li> and displays it into an alert
 	$('#ulListView').off('click', 'li').on('click', 'li', function(){
@@ -62,9 +25,12 @@ $(document).on('pagebeforeshow', '#homePage', function(){
 	
 	
 	
+	
 });//here ends #homePage
 
 $(document).on('pageinit', '#homePage', function(){
+
+	
 
 });
 
@@ -143,10 +109,29 @@ $(document).on('pageinit', '#newEntry', function(){
 			if($('#submitBt').val() === "Submit") {
 			
 				//add a random number for the key
-				var randomId = genRandomId();
-			
-				//add the string conversion to the localStorage with a key-value
-				localStorage.setItem(randomId,jsonObj);
+				var randomId = "entry: '+genRandomId()+'";
+			    console.log(randomId);
+			    //call ajax and record entry into the data-base
+			    $.ajax ({
+			    	headers: {
+			    		'Accept':'application/json',
+						'Content-Type':'application/json'
+
+			    	},
+			    	method: "post",
+			    	url:  "/hml",
+			    	data: {
+			    		randomId: jsonObj,
+			    	datatype: "json", 
+			    	success: function() {
+			    	
+			    		console.log("Added Entry!");
+			    	
+			    	}
+			    	
+			    
+			    
+			    });
 			
 				//reset the form after localStorage insertion
 				$($myFirstForm)[0].reset();
@@ -189,39 +174,56 @@ var genRandomId = function(){
 
 //dsplayData function outputs the localStorage on the '#homePage'
 var outputData = function(){
-	//1. Get the lenght of the localStorage
-	var localStL = localStorage.length;
-
+	
 	$('#container').empty();
 	
 	//2. Create a <ul> filter that holds all the <li>
 	var ulListView = $('#container').append('<ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true" id = "ulListView"></ul>');
 
-	//3. Loop through the length of localStorage
-	for(var i = 0, j = localStL; i < j; i ++) {
-
-		//3.1. Get key-value pare
-		var storedKey = localStorage.key(i); //get the key to refference for the value
-		var storedObj = localStorage.getItem(storedKey); //get the value under the specified key
-
-		//3.2. Parse data back into an obj. to be able to access properties.
-		var parsedObj = JSON.parse(storedObj);
-
-		//3.3. Add the id property to parsedObj for future refference
-		parsedObj.id = storedKey;
-
+	
+		//get data on #homePage init 	
+	$.ajax ({
+		url: "_view/entries",
+		dataType: "json",
+		success: function(data) {
+					
+		//2. Create a <ul> filter that holds all the <li>
+		var ulListView = $('#container').append('<ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true" id = "ulListView"></ul>');
+		$.each(data.rows, function(index, entry) {
+			var nameItem = entry.value.nameItem[1];
+			var genreItem = entry.value.genreItem[1];
+			var lengthItem = entry.value.lengthItem[1];
+			var mediaChoice = entry.value.mediaChoice[1];
+			var pubDate = entry.value.pubDate[1];
+			var purchaseDate = entry.value.purchaseDate[1];
+			var notes = entry.value.notesLabel[1];
+			var id = entry.id;
+			//console.log(id);
+						
+			//3.4. Create a <li> tag that holds the localStorage object
+			var insideLi = $('#ulListView').append('<li id = "'+id+'" data-entryname ="'+nameItem+'" data-mediatype ="'+mediaChoice+'" data-genre ="'+genreItem+'" data-length = "'+lengthItem+'" data-rldate = "'+pubDate+'" data-prdate = "'+purchaseDate+'" data-notes = "'+notesLabel+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(mediaChoice)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+nameItem+'</strong></p></span><p class = "ui-li-aside">'+mediaChoice+'</p></a></li>');
+			
+			//This line refreshes the listview attribute in jqm (there are some issues in the #homePage with the way they display)
+			insideLi.listview().listview('refresh');
+			});// here ends each()
+			
+			
+			
+			
+				//window.location.reload(true);
+		} //ends success function
+	}); //ends ajax call
+		
 		//3.4. Create a <li> tag that holds the localStorage object
-		var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'" data-entryname ="'+parsedObj.nameItem[1]+'" data-mediatype ="'+parsedObj.mediaChoice[1]+'" data-genre ="'+parsedObj.genreItem[1]+'" data-length = "'+parsedObj.lengthItem[1]+'" data-rldate = "'+parsedObj.pubDate[1]+'" data-prdate = "'+parsedObj.purchaseDate[1]+'" data-notes = "'+parsedObj.notesLabel[1]+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj.mediaChoice[1])+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj.nameItem[1]+'</strong></p></span><p class = "ui-li-aside">'+parsedObj.mediaChoice[1]+'</p></a></li>');
+		//var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'" data-entryname ="'+parsedObj.nameItem[1]+'" data-mediatype ="'+parsedObj.mediaChoice[1]+'" data-genre ="'+parsedObj.genreItem[1]+'" data-length = "'+parsedObj.lengthItem[1]+'" data-rldate = "'+parsedObj.pubDate[1]+'" data-prdate = "'+parsedObj.purchaseDate[1]+'" data-notes = "'+parsedObj.notesLabel[1]+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj.mediaChoice[1])+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj.nameItem[1]+'</strong></p></span><p class = "ui-li-aside">'+parsedObj.mediaChoice[1]+'</p></a></li>');
 
-		//This line refreshes the listview attribute in jqm (there are some issues in the #homePage with the way they display)
-		insideLi.listview().listview('refresh');
+		
 
 		//3.5. Check if a devider with the object's '<optgroup label> already exists, if not create one ["audio", "video", "data", "other"]
 
 		//3.6. Add the localStorage object under the above category using the html format refferenced below (make sure the bbj. has an idea to target it later).
 
-	} //the for loops ends here
-
+	
 };
 
 /*filterImage is in charge of figuring out what type of image we display in the <li>. 
@@ -284,7 +286,7 @@ var deleteEntry = function(obj) {
 	}
 };
 
-/*editObject function goes here*/
+/*editObject function goes here
 var editObject = function(keyObj) {
 	
 	window.location = '#newEntry';
@@ -323,7 +325,7 @@ var editObject = function(keyObj) {
 	 //menu (from the edit page) to display the same mediaType, when editing an obj.
 	 var mediaOption = parsedEditObj.mediaChoice[1];
 	 $('#mediaChoice').val(mediaOption); 
-};
+};*/
 
 
 
