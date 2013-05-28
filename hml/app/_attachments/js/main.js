@@ -98,10 +98,9 @@ $(document).on('pageinit', '#newEntry', function(){
 			data.notesLabel = ["Notes", $('#notes').val()];
 			
 			
-			//create data object with proper attributes
 			
-			//stringify the data from the form object
-			var jsonObj = JSON.stringify(data);
+			
+			
 			
 			/*implement a switch based on this being the edit pass or the newEntry pass
 			target the submitBt's value to check which one it is 
@@ -109,8 +108,8 @@ $(document).on('pageinit', '#newEntry', function(){
 			if($('#submitBt').val() === "Submit") {
 			
 				//add a random number for the key
-				var randomId = "entry: '+genRandomId()+'";
-			    console.log(randomId);
+				var randomId = "entry: "+genRandomId();
+				data._id = randomId;
 			    //call ajax and record entry into the data-base
 			    $.ajax ({
 			    	headers: {
@@ -118,14 +117,13 @@ $(document).on('pageinit', '#newEntry', function(){
 						'Content-Type':'application/json'
 
 			    	},
-			    	method: "post",
+			    	method: "POST",
 			    	url:  "/hml",
-			    	data: {
-			    		randomId: jsonObj,
+			    	data: JSON.stringify(data),
 			    	datatype: "json", 
 			    	success: function() {
 			    	
-			    		console.log("Added Entry!");
+			    		alert($(data.nameItem[1] +' is now saved!');
 			    	
 			    	}
 			    	
@@ -276,14 +274,34 @@ var displayDetails = function (obj) {
 
 /*deleteEntry function */
 var deleteEntry = function(obj) {
-	var confirmation = confirm("Are you sure?");
-	if(confirmation) {
-		localStorage.removeItem(obj);
-	}
-	
-	else {
-		return;
-	}
+	$.ajax({
+		url:"_view/entries",
+		dataType:"json",
+		success:function(data){
+			$.each(data.rows, function(index, entry){
+				if(entry._id === obj){
+					$.ajax({
+						url:'/hml/'+entry._id,
+						type:'GET',
+						success:function(data){
+							thisConfirm = confirm("Are you sure you want to delete this?");
+						
+							if(thisConfirm){
+								$.ajax({
+									url:'/hml/'+data._id+'?rev='+data._rev,
+									type:'DELETE',
+									dataType:'json',
+									success:function(){
+										alert("This was deleted!");
+									}
+								});
+							}
+						
+					});
+				}
+			}
+		}
+	});
 };
 
 /*editObject function goes here
