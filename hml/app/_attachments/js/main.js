@@ -5,65 +5,65 @@
 
 //#homePage starts here
 $(document).on('pagebeforeshow', '#homePage', function(){
-	
-	
-	
+
+
+
 	//call outputData function
 	outputData();
-	
+
 	//refresh ulListView
 	$('#ulListView').listview().listview('refresh');		
 
-	
+
 	//Gets the id of <li> and displays it into an alert
 	$('#ulListView').off('click', 'li').on('click', 'li', function(){
-		
+
 		//call displayDetails function with the obj.that was clicked on as argument
 		displayDetails(this);
-			
+
 	});
-	
-	
-	
-	
+
+
+
+
 });//here ends #homePage
 
 $(document).on('pageinit', '#homePage', function(){
 
-	
+
 
 });
 
 //#newsFeed starts here
 $(document).on('pageinit', '#newsFeed', function(){
-	
+
 });//here ends #newsFeed
 
 //#aboutPage starts here
 $(document).on('pageinit', '#aboutPage', function(){
-	
+
 });//here ends #aboutPage
 
 //#detailsPage starts here
 $(document).on('pageinit', '#detailsPage', function(){
-		
+
 	//target the deleteButton
 	$('.delBtn').click(function(){
-		
+
 		/*on-click calls deleteEntry function that takes the object's id 
 		and delete the localStorage entry with the same key value*/
 		deleteEntry(this.id);
-		
+
 		window.location = "#homePage";
 	});
-	
+
 	//target the editButton
 	$('.editBtn').click(function(){
-		
+
 		/*on-click calls editObject function that takes the object's id
 		and inserts some of the object's properties into the newEntry page*/
 		editObject(this.id);
-		
+
 		window.location = "#newEntry";
 		window.location.reload(true);
 	});
@@ -76,17 +76,17 @@ $(document).on('pagebeforeshow', '#detailsPage', function(){
 
 //#newEntryPage starts here
 $(document).on('pageinit', '#newEntry', function(){
-	
+
 	//function to parse the form
 	var $myFirstForm = $('#firstForm');
-	
+
 	//access the validation property (plugging)
 	$myFirstForm.validate({
 		//ignores the items that have the class "ignore" on them			
 		ignore: ".ignore",
 		invalidHandler: function() {},		
 		submitHandler: function(randomId){
-		
+
 			//serialize the form data into the data object 
 			var data ={};
 			data.mediaChoice = ["MediaChoice", $('#mediaChoice').val()];
@@ -96,17 +96,12 @@ $(document).on('pageinit', '#newEntry', function(){
 			data.pubDate = ["PubDate", $('#pubDate').val()];
 			data.purchaseDate = ["PurchaseDate", $('#purchaseDate').val()];
 			data.notesLabel = ["Notes", $('#notes').val()];
-			
-			
-			
-			
-			
-			
+
 			/*implement a switch based on this being the edit pass or the newEntry pass
 			target the submitBt's value to check which one it is 
 			*--> if is Submit generate a new key else overwrite the same key for edit*/
 			if($('#submitBt').val() === "Submit") {
-			
+
 				//add a random number for the key
 				var randomId = "entry: "+genRandomId();
 				data._id = randomId;
@@ -122,44 +117,42 @@ $(document).on('pageinit', '#newEntry', function(){
 			    	data: JSON.stringify(data),
 			    	datatype: "json", 
 			    	success: function() {
-			    	
-			    		alert($(data.nameItem[1] +' is now saved!');
-			    	
+
+			    		alert(data.nameItem[1] +' is now saved!');
+
 			    	}
-			    	
-			    
-			    
+
 			    });
-			
+
 				//reset the form after localStorage insertion
 				$($myFirstForm)[0].reset();
-			
+
 				//refresh localStorage
 				window.location = '#homePage';
 			}
-			
+
 			else {
-				
+
 				var randomId2 = $('#submitBt').data('key');
-				
-				
+
+
 				//add the string conversion to the localStorage with the same key
 				localStorage.setItem(randomId2,jsonObj);
-				
+
 				//reset the form after localStorage insertion
 				$($myFirstForm)[0].reset();
-				
+
 				//refresh localStorage
 				window.location = '#homePage';
 			}
-				
+
 		}
 	}); //here ends the validation function
-	
+
 	//Refresh the '#homePage' to display all the local store changes
-		
-	
-	
+
+
+
 });//here ends #newEntryPage
 
 
@@ -172,19 +165,19 @@ var genRandomId = function(){
 
 //dsplayData function outputs the localStorage on the '#homePage'
 var outputData = function(){
-	
+
 	$('#container').empty();
-	
+
 	//2. Create a <ul> filter that holds all the <li>
 	var ulListView = $('#container').append('<ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true" id = "ulListView"></ul>');
 
-	
+
 		//get data on #homePage init 	
 	$.ajax ({
 		url: "_view/entries",
 		dataType: "json",
 		success: function(data) {
-					
+
 		//2. Create a <ul> filter that holds all the <li>
 		var ulListView = $('#container').append('<ul data-role = "listview" data-filter="true" data-inset = "true" data-corners = "true" id = "ulListView"></ul>');
 		$.each(data.rows, function(index, entry) {
@@ -197,31 +190,31 @@ var outputData = function(){
 			var notes = entry.value.notesLabel[1];
 			var id = entry.id;
 			//console.log(id);
-						
+
 			//3.4. Create a <li> tag that holds the localStorage object
 			var insideLi = $('#ulListView').append('<li id = "'+id+'" data-entryname ="'+nameItem+'" data-mediatype ="'+mediaChoice+'" data-genre ="'+genreItem+'" data-length = "'+lengthItem+'" data-rldate = "'+pubDate+'" data-prdate = "'+purchaseDate+'" data-notes = "'+notesLabel+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(mediaChoice)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+nameItem+'</strong></p></span><p class = "ui-li-aside">'+mediaChoice+'</p></a></li>');
-			
+
 			//This line refreshes the listview attribute in jqm (there are some issues in the #homePage with the way they display)
 			insideLi.listview().listview('refresh');
 			});// here ends each()
-			
-			
-			
-			
+
+
+
+
 				//window.location.reload(true);
 		} //ends success function
 	}); //ends ajax call
-		
+
 		//3.4. Create a <li> tag that holds the localStorage object
 		//var insideLi = $('#ulListView').append('<li id = "'+parsedObj.id+'" data-entryname ="'+parsedObj.nameItem[1]+'" data-mediatype ="'+parsedObj.mediaChoice[1]+'" data-genre ="'+parsedObj.genreItem[1]+'" data-length = "'+parsedObj.lengthItem[1]+'" data-rldate = "'+parsedObj.pubDate[1]+'" data-prdate = "'+parsedObj.purchaseDate[1]+'" data-notes = "'+parsedObj.notesLabel[1]+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(parsedObj.mediaChoice[1])+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+parsedObj.nameItem[1]+'</strong></p></span><p class = "ui-li-aside">'+parsedObj.mediaChoice[1]+'</p></a></li>');
 
-		
+
 
 		//3.5. Check if a devider with the object's '<optgroup label> already exists, if not create one ["audio", "video", "data", "other"]
 
 		//3.6. Add the localStorage object under the above category using the html format refferenced below (make sure the bbj. has an idea to target it later).
 
-	
+
 };
 
 /*filterImage is in charge of figuring out what type of image we display in the <li>. 
@@ -229,39 +222,39 @@ var outputData = function(){
 var filterImage = function(input) {
 	//1. if the input is audio output smAudio.png
 	if (input.indexOf("Audio") == 0) {
-		
+
 		return "smAudio.png";
 	}
 	else if(input.indexOf("Video") == 0) {
-	
+
 		return "smVideo.png";
 	}
 	else if(input.indexOf("Data") == 0) {
-		
+
 		return "smData.png";
 	}
 	else if(input.indexOf("eBook") == 0) {
-		
+
 		return "smBook.png";
 	}
 	else if(input.indexOf("eDoc") == 0) {
-		
+
 		return "smDocument.png";
 	}
 	else if(input.indexOf("MemoryStick") == 0) {
-		
+
 		return "smMemoryStick.png";
 	}
-	
+
 };
 
 /*displayDetails function*/
 var displayDetails = function (obj) {
 	$('.delBtn').attr('id', obj.id);
 	$('.editBtn').attr('id', obj.id);
-	
+
 	$('#contentSpace').empty();
-	
+
 	var ulTop = $('#contentSpace').append('<ul data-role="listview" data-inset="true" id="ulTop"></ul>');
 	var devider = $('#ulTop').append('<li data-role = "devider" data-theme = "b"><h2>Name: &nbsp;'+$(obj).attr('data-entryname')+'</h2></li>');
 	var lsMediaType = $('#ulTop').append('<li><p><strong>Media Type:</strong><span class = "ui-li-aside">'+$(obj).attr('data-mediatype')+'</span></p></li>');
@@ -274,34 +267,7 @@ var displayDetails = function (obj) {
 
 /*deleteEntry function */
 var deleteEntry = function(obj) {
-	$.ajax({
-		url:"_view/entries",
-		dataType:"json",
-		success:function(data){
-			$.each(data.rows, function(index, entry){
-				if(entry._id === obj){
-					$.ajax({
-						url:'/hml/'+entry._id,
-						type:'GET',
-						success:function(data){
-							thisConfirm = confirm("Are you sure you want to delete this?");
-						
-							if(thisConfirm){
-								$.ajax({
-									url:'/hml/'+data._id+'?rev='+data._rev,
-									type:'DELETE',
-									dataType:'json',
-									success:function(){
-										alert("This was deleted!");
-									}
-								});
-							}
-						
-					});
-				}
-			}
-		}
-	});
+	
 };
 
 /*editObject function goes here
@@ -344,8 +310,3 @@ var editObject = function(keyObj) {
 	 var mediaOption = parsedEditObj.mediaChoice[1];
 	 $('#mediaChoice').val(mediaOption); 
 };*/
-
-
-
-
-
