@@ -8,7 +8,8 @@ function (doc) {
 			"pubDate"   : doc.pubDate,
 			"purchaseDate" : doc.purchaseDate,
 			"notesLabel": doc.notesLabel,
-			"id": doc.id
+			"_id": doc._id,
+			"_rev": doc._rev
 		
 		});
 	}

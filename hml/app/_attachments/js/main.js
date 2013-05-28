@@ -52,7 +52,7 @@ $(document).on('pageinit', '#detailsPage', function(){
 
 		/*on-click calls deleteEntry function that takes the object's id 
 		and delete the localStorage entry with the same key value*/
-		deleteEntry(this.id);
+		deleteEntry(this);
 
 		window.location = "#homePage";
 	});
@@ -96,6 +96,7 @@ $(document).on('pageinit', '#newEntry', function(){
 			data.pubDate = ["PubDate", $('#pubDate').val()];
 			data.purchaseDate = ["PurchaseDate", $('#purchaseDate').val()];
 			data.notesLabel = ["Notes", $('#notes').val()];
+			
 
 			/*implement a switch based on this being the edit pass or the newEntry pass
 			target the submitBt's value to check which one it is 
@@ -103,7 +104,7 @@ $(document).on('pageinit', '#newEntry', function(){
 			if($('#submitBt').val() === "Submit") {
 
 				//add a random number for the key
-				var randomId = "entry: "+genRandomId();
+				var randomId = "entry:"+genRandomId();
 				data._id = randomId;
 			    //call ajax and record entry into the data-base
 			    $.ajax ({
@@ -129,6 +130,7 @@ $(document).on('pageinit', '#newEntry', function(){
 
 				//refresh localStorage
 				window.location = '#homePage';
+				window.location.reload('true');
 			}
 
 			else {
@@ -188,11 +190,13 @@ var outputData = function(){
 			var pubDate = entry.value.pubDate[1];
 			var purchaseDate = entry.value.purchaseDate[1];
 			var notes = entry.value.notesLabel[1];
-			var id = entry.id;
-			//console.log(id);
+			var _id = entry.value._id;
+			var _rev = entry.value._rev;
+			console.log(_rev);
+			
 
 			//3.4. Create a <li> tag that holds the localStorage object
-			var insideLi = $('#ulListView').append('<li id = "'+id+'" data-entryname ="'+nameItem+'" data-mediatype ="'+mediaChoice+'" data-genre ="'+genreItem+'" data-length = "'+lengthItem+'" data-rldate = "'+pubDate+'" data-prdate = "'+purchaseDate+'" data-notes = "'+notesLabel+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(mediaChoice)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+nameItem+'</strong></p></span><p class = "ui-li-aside">'+mediaChoice+'</p></a></li>');
+			var insideLi = $('#ulListView').append('<li id = "'+_id+' "data-rev="'+_rev+'" data-entryname ="'+nameItem+'" data-mediatype ="'+mediaChoice+'" data-genre ="'+genreItem+'" data-length = "'+lengthItem+'" data-rldate = "'+pubDate+'" data-prdate = "'+purchaseDate+'" data-notes = "'+notes+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(mediaChoice)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+nameItem+'</strong></p></span><p class = "ui-li-aside">'+mediaChoice+'</p></a></li>');
 
 			//This line refreshes the listview attribute in jqm (there are some issues in the #homePage with the way they display)
 			insideLi.listview().listview('refresh');
@@ -245,13 +249,16 @@ var filterImage = function(input) {
 
 		return "smMemoryStick.png";
 	}
-
+	
 };
 
 /*displayDetails function*/
 var displayDetails = function (obj) {
+	console.log(obj);
 	$('.delBtn').attr('id', obj.id);
+	
 	$('.editBtn').attr('id', obj.id);
+	
 
 	$('#contentSpace').empty();
 
@@ -266,13 +273,16 @@ var displayDetails = function (obj) {
 };
 
 /*deleteEntry function */
-var deleteEntry = function(obj) {
+/*var deleteEntry = function(obj) {
 	$.ajax({
 		url:"_view/entries",
 		dataType:"json",
 		success:function(data){
 			$.each(data.rows, function(index, entry){
-				if(entry._id === obj){
+				console.log(entry.id);
+				console.log(obj);
+				console.log(entry.value._rev);
+				if(entry.id === obj){
 					$.ajax({
 						url:'/hml/'+entry._id,
 						type:'GET',
@@ -292,9 +302,39 @@ var deleteEntry = function(obj) {
 						}
 					});
 				}
-			}
+			});
 		}
 	});
+};*/
+
+var deleteEntry = function(obj) {
+	
+	var delConfirm = confirm("Are you sure you want to delete " +obj.id+ " ?");
+	if (!delConfirm) {
+		return;
+	}
+	else {
+		$.ajax ({
+			url: "/hml/"+obj.id,
+			type: "GET",
+			success: function(data) {
+				console.log("The id of this obj. is " +obj.id);
+				console.log(obj);
+				$.ajax({
+					url: "/hml/"+obj.id+"?rev="+obj.rev,
+					type: "DELETE",
+					dataType: "json",
+					success: function() {
+						alert("I've deleted this Object!");
+					}
+				});
+				
+				
+			}
+	
+		});
+	}
+	
 };
 /*editObject function goes here
 var editObject = function(keyObj) {
