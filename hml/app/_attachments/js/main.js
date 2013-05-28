@@ -267,9 +267,35 @@ var displayDetails = function (obj) {
 
 /*deleteEntry function */
 var deleteEntry = function(obj) {
-	
-};
+	$.ajax({
+		url:"_view/entries",
+		dataType:"json",
+		success:function(data){
+			$.each(data.rows, function(index, entry){
+				if(entry._id === obj){
+					$.ajax({
+						url:'/hml/'+entry._id,
+						type:'GET',
+						success:function(data){
+							var thisConfirm = confirm("Are you sure you want to delete this?");
+							if(thisConfirm){
+								$.ajax({
+									url:'/hml/'+data._id+'?rev='+data._rev,
+									type:'DELETE',
+									dataType:'json',
+									success:function(){
+										alert("This was deleted!");
+									}
 
+								});
+							}
+						}
+					});
+				}
+			}
+		}
+	});
+};
 /*editObject function goes here
 var editObject = function(keyObj) {
 	
