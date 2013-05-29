@@ -4,7 +4,7 @@
       "db": "http://127.0.0.1:5984/hml"
    	},
    	"cloudant": {
-   	  "db": "http://nactusberrilli:temp123@nactusberrilli.cloudant.com/hml"
+   	  "db": "http://nactusberrilli:Andreibg123@nactusberrilli.cloudant.com/hml"
    	}
   }
 }

@@ -19,16 +19,24 @@ $(document).on('pagebeforeshow', '#homePage', function(){
 	$('#ulListView').off('click', 'li').on('click', 'li', function(){
 		
 		//re-construct the object to get the data-rev out
-		
+		console.log(this);
 		var obj = {};
     	obj.id = [$(this).attr('id')];
-    	obj.rev = [$(this).data('rev')]; 
+    	obj.rev = [$(this).data('rev')];
+    	obj.mediaChoice = [$(this).data('mediatype')];
+    	obj.nameItem = [$(this).data('entryname')];
+    	obj.genreItem = [$(this).data('genre')];
+    	obj.lengthItem = [$(this).data('length')];
+    	obj.rlDate = [$(this).data('rldate')];
+    	obj.prDate = [$(this).data('prdate')];
+    	obj.notes = [$(this).data('notes')];
+    	 
 		
 			
 		
 		
 		//call displayDetails function with the obj.that was clicked on as argument
-		displayDetails(this, obj.id, obj.rev);
+		displayDetails(this, obj.id, obj.rev, obj.mediaChoice, obj.nameItem, obj.genreItem, obj.lengthItem, obj.rlDate, obj.prDate, obj.notes);
 
 	});
 
@@ -68,13 +76,24 @@ $(document).on('pageinit', '#detailsPage', function(){
 
 	//target the editButton
 	$('.editBtn').click(function(){
-
+		
+		//catch obj. of <this> to pass values into another function
+		var brObj = {};
+		brObj.media = [$(this).attr('mediaChoice')];
+		brObj.nameItem = [$(this).attr('nameitem')];
+		brObj.genreItem = [$(this).attr('genreitem')];
+		brObj.lengthItem = [$(this).attr('lengthItem')];
+		brObj.rlDate = [$(this).attr('rldate')];
+		brObj.pbDate = [$(this).attr('prdate')];
+		brObj.notes = [$(this).attr('notes')];
+		
+		
 		/*on-click calls editObject function that takes the object's id
 		and inserts some of the object's properties into the newEntry page*/
-		editObject(this.id);
+		editObject(brObj.media, brObj.nameItem, brObj.genreItem, brObj.lengthItem, brObj.rlDate, brObj.pbDate, brObj.notes);
 
-		window.location = "#newEntry";
-		window.location.reload(true);
+		//window.location = "#newEntry";
+		//window.location.reload(true);
 	});
 
 });//here ends #detailsPage
@@ -144,12 +163,6 @@ $(document).on('pageinit', '#newEntry', function(){
 
 			else {
 
-				var randomId2 = $('#submitBt').data('key');
-
-
-				//add the string conversion to the localStorage with the same key
-				localStorage.setItem(randomId2,jsonObj);
-
 				//reset the form after localStorage insertion
 				$($myFirstForm)[0].reset();
 
@@ -201,7 +214,7 @@ var outputData = function(){
 			var notes = entry.value.notesLabel[1];
 			var _id = entry.value._id;
 			var _rev = entry.value._rev;
-			console.log(_rev);
+			
 			
 
 			//3.4. Create a <li> tag that holds the localStorage object
@@ -262,13 +275,22 @@ var filterImage = function(input) {
 };
 
 /*displayDetails function*/
-var displayDetails = function (obj, id, rev) {
+var displayDetails = function (obj, id, rev, mediaChoice, nameItem, genreItem, lengthItem, rlDate, prDate, notes) {
 	console.log(id);
 	console.log(rev);
 	$('.delBtn').attr('id', id);
 	$('.delBtn').attr('rev',rev);
+	
 	$('.editBtn').attr('id', id);
 	$('.editBtn').attr('rev', rev);
+	$('.editBtn').attr('mediaChoice', mediaChoice);
+	$('.editBtn').attr('nameItem', nameItem);
+	$('.editBtn').attr('genreItem', genreItem);
+	$('.editBtn').attr('lengthItem', lengthItem);
+	$('.editBtn').attr('rlDate', rlDate);
+	$('.editBtn').attr('prDate', prDate);
+	$('.editBtn').attr('notes', notes);
+	
 	
 	$('#contentSpace').empty();
 
@@ -283,40 +305,6 @@ var displayDetails = function (obj, id, rev) {
 };
 
 /*deleteEntry function */
-/*var deleteEntry = function(obj) {
-	$.ajax({
-		url:"_view/entries",
-		dataType:"json",
-		success:function(data){
-			$.each(data.rows, function(index, entry){
-				console.log(entry.id);
-				console.log(obj);
-				console.log(entry.value._rev);
-				if(entry.id === obj){
-					$.ajax({
-						url:'/hml/'+entry._id,
-						type:'GET',
-						success:function(data){
-							var thisConfirm = confirm("Are you sure you want to delete this?");
-							if(thisConfirm){
-								$.ajax({
-									url:'/hml/'+data._id+'?rev='+data._rev,
-									type:'DELETE',
-									dataType:'json',
-									success:function(){
-										alert("This was deleted!");
-									}
-
-								});
-							}
-						}
-					});
-				}
-			});
-		}
-	});
-};*/
-
 var deleteEntry = function(obj) {
 	
 	var delConfirm = confirm("Are you sure you want to delete " +obj.id+ " ?");
@@ -347,45 +335,32 @@ var deleteEntry = function(obj) {
 	
 		});
 	}
-	
 };
-/*editObject function goes here
-var editObject = function(keyObj) {
+
+//editFunction function goes here
+var editObject = function(media, nameItem, genreItem, lengthItem, rlDate, pbDate, notes) {
 	
 	window.location = '#newEntry';
-	
+	console.log(media);
 	//Target the submitBt and change its value to Edit
 	$('#submitBt').attr('value', 'Edit');
+	$('#newBtn').attr('value', 'Edit');
 	
-	//Add the attr key to the editBtn
-	$('#submitBt').data('key', keyObj);
 	
-	//Get the value under the specified key
-	var storedEditObj = localStorage.getItem(keyObj); 
+	$('#nameItem').attr("value", nameItem);
+	$('#genreItem').attr("value", genreItem);
+	$('#lengthItem').attr("value", lengthItem);
+	$('#pubDate').attr("value", rlDate);
+	$('#purchaseDate').attr("value", pbDate);
+	$('textarea[id = notes]').val(notes);
 	
-	//Parse data back into an obj. to be able to access properties.
-	var parsedEditObj = JSON.parse(storedEditObj);
+	var mediaOption = media;
+	 $('#mediaChoice').val(mediaOption); 
 	
-	//Add data into nameItem form in '#newEntry' page
-	 $('#nameItem').attr("value", parsedEditObj.nameItem[1]);
-	 
-	//Add data into #genreItem 
-	 $('#genreItem').attr("value", parsedEditObj.genreItem[1]);
-	 
-	 //Add data into #lengthItem 
-	 $('#lengthItem').attr("value", parsedEditObj.lengthItem[1]);
-	 
-	 //Add data into #pubLength 
-	 $('#pubDate').attr("value", parsedEditObj.pubDate[1]);
-	 
-	 //Add data into #purchaseDate
-	 $('#purchaseDate').attr("value", parsedEditObj.purchaseDate[1]);
-	 
-	 //Add data into #notes
-	 $('textarea[id = notes]').val(parsedEditObj.notesLabel[1]);
+};	
+	
 	 
 	 //Gets the medidType value of the parsed object and forces the dropdown 
 	 //menu (from the edit page) to display the same mediaType, when editing an obj.
-	 var mediaOption = parsedEditObj.mediaChoice[1];
-	 $('#mediaChoice').val(mediaOption); 
-};*/
+	 //var mediaOption = parsedEditObj.mediaChoice[1];
+	 //$('#mediaChoice').val(mediaOption); 
