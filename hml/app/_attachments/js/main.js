@@ -17,9 +17,18 @@ $(document).on('pagebeforeshow', '#homePage', function(){
 
 	//Gets the id of <li> and displays it into an alert
 	$('#ulListView').off('click', 'li').on('click', 'li', function(){
-
+		
+		//re-construct the object to get the data-rev out
+		
+		var obj = {};
+    	obj.id = [$(this).attr('id')];
+    	obj.rev = [$(this).data('rev')]; 
+		
+			
+		
+		
 		//call displayDetails function with the obj.that was clicked on as argument
-		displayDetails(this);
+		displayDetails(this, obj.id, obj.rev);
 
 	});
 
@@ -128,7 +137,7 @@ $(document).on('pageinit', '#newEntry', function(){
 				//reset the form after localStorage insertion
 				$($myFirstForm)[0].reset();
 
-				//refresh localStorage
+				//refresh db
 				window.location = '#homePage';
 				window.location.reload('true');
 			}
@@ -196,7 +205,7 @@ var outputData = function(){
 			
 
 			//3.4. Create a <li> tag that holds the localStorage object
-			var insideLi = $('#ulListView').append('<li id = "'+_id+' "data-rev="'+_rev+'" data-entryname ="'+nameItem+'" data-mediatype ="'+mediaChoice+'" data-genre ="'+genreItem+'" data-length = "'+lengthItem+'" data-rldate = "'+pubDate+'" data-prdate = "'+purchaseDate+'" data-notes = "'+notes+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(mediaChoice)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+nameItem+'</strong></p></span><p class = "ui-li-aside">'+mediaChoice+'</p></a></li>');
+			var insideLi = $('#ulListView').append('<li id = "'+_id+'" data-rev="'+_rev+'" data-entryname ="'+nameItem+'" data-mediatype ="'+mediaChoice+'" data-genre ="'+genreItem+'" data-length = "'+lengthItem+'" data-rldate = "'+pubDate+'" data-prdate = "'+purchaseDate+'" data-notes = "'+notes+'"><a href="#detailsPage" data-transition = "slide"><img src = "images/'+filterImage(mediaChoice)+'" class="ui-li-icon ui-corner-none"/><span><p><strong>'+nameItem+'</strong></p></span><p class = "ui-li-aside">'+mediaChoice+'</p></a></li>');
 
 			//This line refreshes the listview attribute in jqm (there are some issues in the #homePage with the way they display)
 			insideLi.listview().listview('refresh');
@@ -253,13 +262,14 @@ var filterImage = function(input) {
 };
 
 /*displayDetails function*/
-var displayDetails = function (obj) {
-	console.log(obj);
-	$('.delBtn').attr('id', obj.id);
+var displayDetails = function (obj, id, rev) {
+	console.log(id);
+	console.log(rev);
+	$('.delBtn').attr('id', id);
+	$('.delBtn').attr('rev',rev);
+	$('.editBtn').attr('id', id);
+	$('.editBtn').attr('rev', rev);
 	
-	$('.editBtn').attr('id', obj.id);
-	
-
 	$('#contentSpace').empty();
 
 	var ulTop = $('#contentSpace').append('<ul data-role="listview" data-inset="true" id="ulTop"></ul>');
@@ -325,10 +335,13 @@ var deleteEntry = function(obj) {
 					type: "DELETE",
 					dataType: "json",
 					success: function() {
-						alert("I've deleted this Object!");
+						alert("Object Deleted!");
+						
 					}
 				});
-				
+				//refresh db
+				window.location = '#homePage';
+				window.location.reload('true');
 				
 			}
 	
