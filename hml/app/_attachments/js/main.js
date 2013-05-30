@@ -79,6 +79,8 @@ $(document).on('pageinit', '#detailsPage', function(){
 		
 		//catch obj. of <this> to pass values into another function
 		var brObj = {};
+		brObj.rev = [$(this).attr('rev')];
+		brObj.id = [$(this).attr('id')];
 		brObj.media = [$(this).attr('mediaChoice')];
 		brObj.nameItem = [$(this).attr('nameitem')];
 		brObj.genreItem = [$(this).attr('genreitem')];
@@ -87,11 +89,12 @@ $(document).on('pageinit', '#detailsPage', function(){
 		brObj.pbDate = [$(this).attr('prdate')];
 		brObj.notes = [$(this).attr('notes')];
 		
-		
+		console.log(this);
 		/*on-click calls editObject function that takes the object's id
 		and inserts some of the object's properties into the newEntry page*/
-		editObject(brObj.media, brObj.nameItem, brObj.genreItem, brObj.lengthItem, brObj.rlDate, brObj.pbDate, brObj.notes);
-
+		editObject(brObj.rev, brObj.id, brObj.media, brObj.nameItem, brObj.genreItem, brObj.lengthItem, brObj.rlDate, brObj.pbDate, brObj.notes);
+		
+		//call ajax to re-submit the new values
 		//window.location = "#newEntry";
 		//window.location.reload(true);
 	});
@@ -130,7 +133,8 @@ $(document).on('pageinit', '#newEntry', function(){
 			target the submitBt's value to check which one it is 
 			*--> if is Submit generate a new key else overwrite the same key for edit*/
 			if($('#submitBt').val() === "Submit") {
-
+				
+				$('#newBtn').attr('value', 'New');
 				//add a random number for the key
 				var randomId = "entry:"+genRandomId();
 				data._id = randomId;
@@ -162,7 +166,62 @@ $(document).on('pageinit', '#newEntry', function(){
 			}
 
 			else {
-
+				
+				var randomId1 = $('#submitBt').data('key');
+				var revEdit = $('#submitBt').data('rev');
+				console.log(revEdit);
+				var editedData = {};
+				editedData.mediaChoice = ["MediaChoice", $('#mediaChoice').val()];
+				editedData.nameItem = ["NameItem", $('#nameItem').val()];
+				editedData.genreItem = ["GenreItem", $('#genreItem').val()];
+				editedData.lengthItem = ["LengthItem", $('#lengthItem').val()];
+				editedData.pubDate = ["PubDate", $('#pubDate').val()];
+				editedData.purchaseDate = ["PurchaseDate", $('#purchaseDate').val()];
+				editedData.notesLabel = ["Notes", $('#notes').val()];
+				editedData._rev = [revEdit];
+				
+				//call ajax and put the new values into the id of the current object
+				
+				$.ajax({
+					url: "/hml/"+randomId1,
+					type: "GET",
+					dataType: "json",
+					success: function(someData) {
+						var goodRev = someData._rev;
+						
+						$.ajax({
+							type: "PUT",
+							url: "/hml/"+randomId1,
+							contentType:"application/json",
+				 			data: JSON.stringify({
+				 				"_rev": goodRev,
+				 				"mediaChoice": ["MediaChoice", editedData.mediaChoice[1]],
+				 				"nameItem": ["NameItem", editedData.nameItem[1]],
+				 				"genreItem": ["GenreItem", editedData.genreItem[1]],
+				 				"lengthItem": ["LengthItem", editedData.lengthItem[1]],
+				 				"pubDate": ["PubDate", editedData.pubDate[1]],
+				 				"purchaseDate": ["PurchaseDate", editedData.purchaseDate[1]],
+				 				"notesLabel": ["Notes", editedData.notesLabel[1]]
+				 			}),
+				 			processData:false,
+			      			success: function() {
+			    				alert("Entry Edited!");
+			    				
+			    			}
+						});
+						
+						//refresh db
+						window.location = '#homePage';
+						window.location.reload('true');
+						
+						
+					}
+				
+				
+				});
+				
+				
+				
 				//reset the form after localStorage insertion
 				$($myFirstForm)[0].reset();
 
@@ -338,15 +397,22 @@ var deleteEntry = function(obj) {
 };
 
 //editFunction function goes here
-var editObject = function(media, nameItem, genreItem, lengthItem, rlDate, pbDate, notes) {
+var editObject = function(rev, id, media, nameItem, genreItem, lengthItem, rlDate, pbDate, notes) {
 	
+	//re-direct to a new page
 	window.location = '#newEntry';
-	console.log(media);
+	
+	console.log(rev);
+	
 	//Target the submitBt and change its value to Edit
 	$('#submitBt').attr('value', 'Edit');
-	$('#newBtn').attr('value', 'Edit');
 	
+	$('#submitBt').data('key', id);
+	$('#submitBt').data('rev', rev);
+	//Target the newBtn when in Edit mode and change its value to "Edit"
+	$('#newBtn').attr('text', 'Edit');
 	
+	//Pull back values into the fields 
 	$('#nameItem').attr("value", nameItem);
 	$('#genreItem').attr("value", genreItem);
 	$('#lengthItem').attr("value", lengthItem);
@@ -354,8 +420,11 @@ var editObject = function(media, nameItem, genreItem, lengthItem, rlDate, pbDate
 	$('#purchaseDate').attr("value", pbDate);
 	$('textarea[id = notes]').val(notes);
 	
+	//Switch the media drop-down menu to the value of the current's object for editing
 	var mediaOption = media;
 	 $('#mediaChoice').val(mediaOption); 
+	 
+	 
 	
 };	
 	
